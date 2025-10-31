@@ -10,7 +10,7 @@ export class AIQuestionGenerator {
   private apiEndpoint: string;
 
   constructor(apiKey: string = '') {
-    this.apiKey = apiKey || (import.meta as any).env?.VITE_OPENAI_API_KEY || '';
+    this.apiKey = apiKey || import.meta.env.VITE_OPENAI_API_KEY || '';
     this.apiEndpoint = 'https://api.openai.com/v1/chat/completions';
   }
 
