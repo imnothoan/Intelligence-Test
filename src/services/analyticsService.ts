@@ -227,9 +227,10 @@ class AnalyticsService {
       ? activeStudents.reduce((sum, p) => sum + p.averageScore, 0) / activeStudents.length
       : 0;
 
-    const completionRate = studentPerformances.length > 0
-      ? (studentPerformances.reduce((sum, p) => sum + p.completedExams, 0) /
-         studentPerformances.reduce((sum, p) => sum + p.totalExams, 0)) * 100
+    const totalCompleted = studentPerformances.reduce((sum, p) => sum + p.completedExams, 0);
+    const totalAttempts = studentPerformances.reduce((sum, p) => sum + p.totalExams, 0);
+    const completionRate = totalAttempts > 0
+      ? (totalCompleted / totalAttempts) * 100
       : 0;
 
     const sortedByScore = [...studentPerformances].sort((a, b) => b.averageScore - a.averageScore);

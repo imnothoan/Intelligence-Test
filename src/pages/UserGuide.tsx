@@ -11,13 +11,13 @@ export default function UserGuide() {
   const [activeSection, setActiveSection] = useState('overview');
 
   const sections = [
-    { id: 'overview', title: '📋 Overview', icon: '📋' },
-    { id: 'getting-started', title: '🚀 Getting Started', icon: '🚀' },
-    { id: 'cat-algorithm', title: '🎯 CAT Algorithm', icon: '🎯' },
-    { id: 'llm-integration', title: '🤖 LLM Integration', icon: '🤖' },
-    { id: 'anti-cheat', title: '👁️ Anti-Cheat Training', icon: '👁️' },
-    { id: 'firebase-setup', title: '🔥 Firebase Setup', icon: '🔥' },
-    { id: 'best-practices', title: '✨ Best Practices', icon: '✨' },
+    { id: 'overview', title: 'Overview', icon: '📋' },
+    { id: 'getting-started', title: 'Getting Started', icon: '🚀' },
+    { id: 'cat-algorithm', title: 'CAT Algorithm', icon: '🎯' },
+    { id: 'llm-integration', title: 'LLM Integration', icon: '🤖' },
+    { id: 'anti-cheat', title: 'Anti-Cheat Training', icon: '👁️' },
+    { id: 'firebase-setup', title: 'Firebase Setup', icon: '🔥' },
+    { id: 'best-practices', title: 'Best Practices', icon: '✨' },
   ];
 
   return (
@@ -61,7 +61,7 @@ export default function UserGuide() {
                         : 'text-gray-700 hover:bg-gray-50'
                     }`}
                   >
-                    {section.icon} {section.title.replace(section.icon + ' ', '')}
+                    {section.icon} {section.title}
                   </button>
                 ))}
               </nav>

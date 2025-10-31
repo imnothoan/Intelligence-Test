@@ -289,13 +289,13 @@ class FirebaseService {
     callback: (attempts: ExamAttempt[]) => void
   ): (() => void) | null {
     if (!this.useFirebase) {
-      // In dev mode, set up polling
+      // In dev mode, set up polling with 5-second interval
       const interval = setInterval(() => {
         const attempts = this.getAllFromLocalStorage('examAttempts').filter(
           (a: ExamAttempt) => a.examId === examId
         );
         callback(attempts);
-      }, 2000);
+      }, 5000); // Increased from 2000ms to 5000ms
       return () => clearInterval(interval);
     }
 

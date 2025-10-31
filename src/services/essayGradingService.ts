@@ -147,12 +147,23 @@ class EssayGradingService {
     rubric: Rubric
   ): EssayGradeResult {
     try {
+      // Extract JSON with better error handling
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
         throw new Error('No JSON found in response');
       }
 
-      const parsed = JSON.parse(jsonMatch[0]);
+      let parsed;
+      try {
+        parsed = JSON.parse(jsonMatch[0]);
+      } catch (parseError) {
+        console.error('Failed to parse JSON:', parseError);
+        throw new Error('Invalid JSON in response');
+      }
+
+      if (!parsed.criteriaScores || !Array.isArray(parsed.criteriaScores)) {
+        throw new Error('Missing or invalid criteriaScores in response');
+      }
 
       const criteriaScores: CriteriaScore[] = parsed.criteriaScores.map((cs: any) => {
         const criterion = rubric.criteria.find(c => c.id === cs.criterionId);
