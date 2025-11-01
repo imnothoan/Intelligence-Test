@@ -63,34 +63,81 @@ const InstructorDashboard: React.FC = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <button
             onClick={() => navigate('/instructor/exam/create')}
             className="p-6 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
           >
             <div className="text-3xl mb-2">📝</div>
-            <h3 className="text-xl font-semibold">Create New Exam</h3>
+            <h3 className="text-lg font-semibold">Create Exam</h3>
             <p className="text-sm mt-2 opacity-90">
-              Use AI to generate questions with CAT algorithm
+              AI-powered question generation
             </p>
           </button>
 
           <button
-            onClick={() => setShowCreateClass(true)}
-            className="p-6 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
+            onClick={() => navigate('/instructor/question-bank')}
+            className="p-6 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition"
           >
-            <div className="text-3xl mb-2">👥</div>
-            <h3 className="text-xl font-semibold">Create New Class</h3>
+            <div className="text-3xl mb-2">📚</div>
+            <h3 className="text-lg font-semibold">Question Bank</h3>
             <p className="text-sm mt-2 opacity-90">
-              Set up a new class and add students
+              Manage question repository
             </p>
           </button>
 
-          <div className="p-6 bg-purple-600 text-white rounded-lg shadow">
+          <button
+            onClick={() => navigate('/instructor/monitoring')}
+            className="p-6 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
+          >
             <div className="text-3xl mb-2">📊</div>
-            <h3 className="text-xl font-semibold">View Analytics</h3>
+            <h3 className="text-lg font-semibold">Monitor Exams</h3>
             <p className="text-sm mt-2 opacity-90">
-              Monitor student performance and progress
+              Real-time exam monitoring
+            </p>
+          </button>
+
+          <button
+            onClick={() => navigate('/instructor/analytics')}
+            className="p-6 bg-orange-600 text-white rounded-lg shadow hover:bg-orange-700 transition"
+          >
+            <div className="text-3xl mb-2">📈</div>
+            <h3 className="text-lg font-semibold">Analytics</h3>
+            <p className="text-sm mt-2 opacity-90">
+              Advanced reports & insights
+            </p>
+          </button>
+        </div>
+
+        {/* Additional Actions Row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <button
+            onClick={() => setShowCreateClass(true)}
+            className="p-4 bg-white border-2 border-indigo-600 text-indigo-600 rounded-lg shadow hover:bg-indigo-50 transition"
+          >
+            <div className="text-2xl mb-2">👥</div>
+            <h3 className="font-semibold">Create Class</h3>
+            <p className="text-sm mt-1">
+              Set up new class
+            </p>
+          </button>
+
+          <button
+            onClick={() => navigate('/guide')}
+            className="p-4 bg-white border-2 border-blue-600 text-blue-600 rounded-lg shadow hover:bg-blue-50 transition"
+          >
+            <div className="text-2xl mb-2">📖</div>
+            <h3 className="font-semibold">User Guide</h3>
+            <p className="text-sm mt-1">
+              Learn about features
+            </p>
+          </button>
+
+          <div className="p-4 bg-white border-2 border-gray-300 text-gray-700 rounded-lg shadow">
+            <div className="text-2xl mb-2">🔥</div>
+            <h3 className="font-semibold">Firebase Enabled</h3>
+            <p className="text-sm mt-1">
+              Cloud sync active
             </p>
           </div>
         </div>

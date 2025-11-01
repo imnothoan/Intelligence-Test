@@ -6,6 +6,10 @@ import StudentDashboard from '@/pages/StudentDashboard';
 import ExamCreator from '@/pages/ExamCreator';
 import ExamTaking from '@/pages/ExamTaking';
 import ClassManagement from '@/pages/ClassManagement';
+import MonitoringDashboard from '@/pages/MonitoringDashboard';
+import AnalyticsDashboard from '@/pages/AnalyticsDashboard';
+import QuestionBank from '@/pages/QuestionBank';
+import UserGuide from '@/pages/UserGuide';
 
 function App() {
   const { isAuthenticated, currentUser } = useStore();
@@ -63,6 +67,44 @@ function App() {
                 <Navigate to="/login" replace />
               )
             }
+          />
+          
+          <Route
+            path="/instructor/monitoring"
+            element={
+              isAuthenticated && currentUser?.role === 'instructor' ? (
+                <MonitoringDashboard />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          
+          <Route
+            path="/instructor/analytics"
+            element={
+              isAuthenticated && currentUser?.role === 'instructor' ? (
+                <AnalyticsDashboard />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          
+          <Route
+            path="/instructor/question-bank"
+            element={
+              isAuthenticated && currentUser?.role === 'instructor' ? (
+                <QuestionBank />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          
+          <Route
+            path="/guide"
+            element={<UserGuide />}
           />
           
           <Route
