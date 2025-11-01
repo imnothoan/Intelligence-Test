@@ -2,6 +2,11 @@
 
 A modern, AI-powered intelligent exam platform built with React, TypeScript, and cutting-edge technologies. This platform implements Computerized Adaptive Testing (CAT) algorithm, features AI-powered question generation, real-time monitoring, and comprehensive analytics with Firebase backend integration.
 
+> **🇻🇳 Dành cho người dùng Việt Nam:**  
+> - [Hướng dẫn cài đặt Firebase chi tiết](./docs/vi/FIREBASE_SETUP.md)  
+> - [Hướng dẫn training models và tích hợp API](./docs/vi/MODEL_TRAINING.md)  
+> - Tất cả tài liệu có sẵn bằng Tiếng Việt trong thư mục [docs/vi/](./docs/vi/)
+
 ## ✨ Key Features
 
 ### 🔥 Firebase Backend Integration (NEW)
@@ -319,7 +324,44 @@ See the **User Guide** in the app for detailed setup instructions.
 
 ## 📖 Documentation
 
-Access the comprehensive user guide from within the application:
+### 📚 Comprehensive Guides
+
+**NEW: Detailed documentation now available in multiple languages!**
+
+- **🇬🇧 English Documentation:** [docs/en/](./docs/en/)
+- **🇻🇳 Tài liệu Tiếng Việt:** [docs/vi/](./docs/vi/)
+
+#### Firebase Setup
+Complete guides for setting up Firebase backend:
+- **English:** [Firebase Setup Guide](./docs/en/FIREBASE_SETUP.md)
+- **Tiếng Việt:** [Hướng Dẫn Cài Đặt Firebase](./docs/vi/FIREBASE_SETUP.md)
+
+Topics covered:
+- Creating Firebase project step-by-step
+- Getting and using Firebase JSON configuration file
+- Configuring Authentication, Firestore, and Storage
+- Setting up security rules
+- Testing and troubleshooting
+
+#### Model Training & API Integration
+Comprehensive guides for AI models and APIs:
+- **English:** [Model Training Guide](./docs/en/MODEL_TRAINING.md)
+- **Tiếng Việt:** [Hướng Dẫn Training Models](./docs/vi/MODEL_TRAINING.md)
+
+Topics covered:
+- CAT algorithm question difficulty calibration
+- LLM API integration (OpenAI, Gemini, Hugging Face, Ollama)
+- Training custom anti-cheat computer vision models
+- Essay grading with AI
+- Cost optimization and best practices
+
+#### Example Files
+- [Firebase Configuration Template](./docs/examples/firebase-config.example.ts)
+- [CAT Calibration Script](./docs/examples/training-scripts/train_cat_model.py)
+
+### 📱 In-App User Guide
+
+Access quick reference guides from within the application:
 - Click "User Guide" from any dashboard
 - Learn about CAT algorithm implementation
 - Integrate with various LLM providers
