@@ -97,9 +97,14 @@ def calibrate_questions(csv_file, output_file='calibrated_difficulties.csv'):
     responses_per_question = df.groupby('question_id').size()
     min_responses = responses_per_question.min()
     
-    if min_responses < 20:
+    # Minimum recommended responses for reliable calibration
+    MIN_RECOMMENDED_RESPONSES = 50
+    OPTIMAL_RESPONSES = 100
+    
+    if min_responses < MIN_RECOMMENDED_RESPONSES:
         print(f"WARNING: Minimum responses per question is {min_responses}")
-        print("Recommend at least 100-200 responses per question for accurate calibration")
+        print(f"Recommend at least {OPTIMAL_RESPONSES}-200 responses per question for accurate calibration")
+        print("Results may be unreliable with fewer responses")
     
     # Initial parameters (random small values)
     initial_params = np.random.randn(n_students + n_questions) * 0.1
@@ -132,8 +137,13 @@ def calibrate_questions(csv_file, output_file='calibrated_difficulties.csv'):
     min_diff = difficulties.min()
     max_diff = difficulties.max()
     
-    if max_diff - min_diff < 0.01:
+    # Threshold for detecting if difficulties are too similar (lack of variation)
+    MIN_DIFFICULTY_RANGE = 0.01
+    
+    if max_diff - min_diff < MIN_DIFFICULTY_RANGE:
         print("WARNING: Very small range of difficulties detected")
+        print("All questions appear to have similar difficulty")
+        print("This may indicate insufficient data or homogeneous question set")
         normalized_difficulties = np.full_like(difficulties, 0.5)
     else:
         normalized_difficulties = (difficulties - min_diff) / (max_diff - min_diff)
