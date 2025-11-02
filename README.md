@@ -70,7 +70,8 @@ A modern, AI-powered intelligent exam platform built with React, TypeScript, and
 - **Routing**: React Router v7
 - **State Management**: Zustand
 - **Styling**: Tailwind CSS v4
-- **Backend**: Firebase (Firestore, Authentication, Storage)
+- **Backend**: Firebase (Firestore, Authentication)
+  - **Note**: Images stored as base64 in Firestore (no Storage needed)
 - **AI/ML**: 
   - OpenAI API (GPT-4 for essay grading, GPT-3.5 for questions)
   - TensorFlow.js
@@ -109,10 +110,10 @@ Edit `.env` and add your configuration:
 VITE_OPENAI_API_KEY=your_openai_api_key_here
 
 # Firebase Configuration (optional)
+# Note: Storage is NOT required - images stored as base64 in database
 VITE_FIREBASE_API_KEY=your_firebase_api_key
 VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
 VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 
@@ -311,14 +312,14 @@ npm run lint
 1. Create a Firebase project at [Firebase Console](https://console.firebase.google.com)
 2. Enable Authentication (Email/Password)
 3. Create Firestore Database (start in test mode)
-4. Create Storage bucket
-5. Copy configuration to `.env` file
-6. Update security rules for production
+4. Copy configuration to `.env` file
+5. Update security rules for production
+
+**Note**: Firebase Storage is NOT required. Images are stored as base64 strings in Firestore Database to save costs.
 
 ### Free Tier Limits
 - 1 GB Firestore storage
 - 50K reads/day, 20K writes/day
-- 5 GB Storage
 - Suitable for small to medium institutions
 
 See the **User Guide** in the app for detailed setup instructions.
@@ -340,8 +341,8 @@ Complete guides for setting up Firebase backend:
 Topics covered:
 - Creating Firebase project step-by-step
 - Getting and using Firebase JSON configuration file
-- Configuring Authentication, Firestore, and Storage
-- Setting up security rules
+- Configuring Authentication and Firestore
+- Setting up security rules (Storage NOT needed)
 - Testing and troubleshooting
 
 #### Model Training & API Integration

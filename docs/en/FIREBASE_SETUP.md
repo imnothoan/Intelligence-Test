@@ -14,13 +14,13 @@
 Firebase is Google's free backend platform providing:
 - **Authentication**: User authentication
 - **Firestore Database**: NoSQL database
-- **Storage**: File and image storage
 - **Hosting**: Web app deployment
+
+**Important Note**: The system **DOES NOT** use Firebase Storage to save costs. All images (such as anti-cheat screenshots) are stored as base64 strings directly in Firestore Database.
 
 **Free Tier (Spark Plan) includes:**
 - 1 GB Firestore storage
 - 50,000 reads/day, 20,000 writes/day
-- 5 GB Storage
 - Suitable for small to medium institutions
 
 ## Create Firebase Project
@@ -75,13 +75,7 @@ Firebase is Google's free backend platform providing:
    - `us-central1` (Iowa) - for US
 5. Click **"Enable"**
 
-### Storage
-
-1. In sidebar, select **"Storage"**
-2. Click **"Get started"**
-3. Choose **"Start in test mode"**
-4. Select **same location** as Firestore
-5. Click **"Done"**
+**Done!** You don't need to set up Firebase Storage because the system stores images as base64 in Firestore Database, which saves costs.
 
 ## Get JSON Configuration
 
@@ -98,11 +92,12 @@ const firebaseConfig = {
   apiKey: "AIzaSyBxxx-xxxxxxxxxxxxxxxxxxxxxxxx",
   authDomain: "your-project.firebaseapp.com",
   projectId: "your-project-id",
-  storageBucket: "your-project.appspot.com",
   messagingSenderId: "123456789012",
   appId: "1:123456789012:web:abc123def456"
 };
 ```
+
+**Note**: You can ignore the `storageBucket` field if present, as the system doesn't use Firebase Storage.
 
 ### Method 2: Download google-services.json (Mobile)
 
@@ -131,10 +126,10 @@ Open `.env` file and fill values from Firebase Config:
 VITE_OPENAI_API_KEY=your_openai_api_key_here
 
 # Firebase Configuration
+# Note: VITE_FIREBASE_STORAGE_BUCKET is NOT needed as images are stored as base64 in database
 VITE_FIREBASE_API_KEY=AIzaSyBxxx-xxxxxxxxxxxxxxxxxxxxxxxx
 VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=your-project-id
-VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
 VITE_FIREBASE_MESSAGING_SENDER_ID=123456789012
 VITE_FIREBASE_APP_ID=1:123456789012:web:abc123def456
 
@@ -151,13 +146,11 @@ File `src/config/firebase.ts` will automatically read environment variables:
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
@@ -166,7 +159,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-export const storage = getStorage(app);
+
+// Note: No storage - images are stored as base64 in Firestore
 ```
 
 ## Setup Security Rules
@@ -219,28 +213,6 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow create, update, delete: if request.auth != null && 
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'instructor';
-    }
-  }
-}
-```
-
-3. Click **"Publish"**
-
-### Storage Security Rules
-
-1. Go to **Storage** → **Rules**
-2. Replace rules:
-
-```javascript
-rules_version = '2';
-service firebase.storage {
-  match /b/{bucket}/o {
-    // Only authenticated users can upload
-    match /{allPaths=**} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null &&
-        request.resource.size < 5 * 1024 * 1024 && // Max 5MB
-        request.resource.contentType.matches('image/.*'); // Only images
     }
   }
 }
@@ -303,8 +275,9 @@ Open DevTools (F12) and check console:
 1. Go to Firebase Console → **Usage and billing**
 2. Monitor:
    - Firestore reads/writes
-   - Storage usage
    - Authentication usage
+
+**Note**: No Storage costs as images are stored as base64 in Firestore.
 
 ### Cost Optimization
 
