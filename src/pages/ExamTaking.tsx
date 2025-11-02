@@ -15,9 +15,7 @@ const ExamTaking: React.FC = () => {
   const { currentUser, exams, startExamAttempt, updateExamAttempt, completeExamAttempt } = useStore();
   
   const exam = exams.find(e => e.id === examId);
-  const [attempt] = useState(
-    exam && currentUser ? startExamAttempt(exam.id, currentUser.id) : null
-  );
+  const [attempt, setAttempt] = useState<any>(null);
   
   const [catAlgorithm] = useState(
     exam ? new CATAlgorithm(exam.questions, exam.isAdaptive ? 15 : exam.questions.length) : null
@@ -31,8 +29,25 @@ const ExamTaking: React.FC = () => {
   const [isMonitoringActive, setIsMonitoringActive] = useState(false);
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
 
+  // Initialize exam attempt
+  useEffect(() => {
+    if (exam && currentUser && !attempt) {
+      startExamAttempt(exam.id, currentUser.id)
+        .then(newAttempt => {
+          setAttempt(newAttempt);
+        })
+        .catch(error => {
+          console.error('Failed to start exam attempt:', error);
+          alert('Failed to start exam. Please try again.');
+          navigate(-1); // Go back if attempt creation fails
+        });
+    }
+  }, [exam, currentUser, attempt, startExamAttempt, navigate]);
+
   // Initialize anti-cheat if enabled
   useEffect(() => {
+    if (!attempt) return;
+    
     if (exam?.antiCheatEnabled) {
       antiCheatService.initialize().then(() => {
         setIsMonitoringActive(true);
@@ -52,7 +67,7 @@ const ExamTaking: React.FC = () => {
       stopMonitoring();
       antiCheatService.dispose();
     };
-  }, []);
+  }, [attempt]);
 
   // Timer countdown
   useEffect(() => {

@@ -1,7 +1,15 @@
 /**
  * Advanced Essay Grading Service
- * Uses AI to grade essay questions with rubric-based scoring
+ * Supports multiple AI providers:
+ * 1. Google Gemini (Free, recommended)
+ * 2. OpenAI GPT-4 (Paid)
+ * 3. Mock grading (fallback)
  */
+
+import { geminiService } from './geminiService';
+
+// Constants
+const PLACEHOLDER_OPENAI_KEY = 'your_openai_api_key_here';
 
 export interface Rubric {
   id: string;
@@ -42,63 +50,147 @@ export interface CriteriaScore {
 }
 
 class EssayGradingService {
-  private apiKey: string;
+  private openaiKey: string;
   private apiEndpoint: string;
 
   constructor() {
-    this.apiKey = import.meta.env.VITE_OPENAI_API_KEY || '';
+    this.openaiKey = import.meta.env.VITE_OPENAI_API_KEY || '';
     this.apiEndpoint = 'https://api.openai.com/v1/chat/completions';
   }
 
   /**
    * Grade an essay using AI with rubric
+   * Tries Gemini first (free), then OpenAI, then mock grading
    */
   async gradeEssay(
     essay: string,
     question: string,
     rubric: Rubric
   ): Promise<EssayGradeResult> {
-    if (!this.apiKey) {
-      return this.mockGradeEssay(essay, rubric);
-    }
-
-    try {
-      const prompt = this.buildGradingPrompt(essay, question, rubric);
-
-      const response = await fetch(this.apiEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`,
-        },
-        body: JSON.stringify({
-          model: 'gpt-4',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are an expert educational assessor who grades essays fairly and provides constructive feedback.',
-            },
-            {
-              role: 'user',
-              content: prompt,
-            },
-          ],
-          temperature: 0.3,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`API request failed: ${response.statusText}`);
+    // Try Gemini first (free and recommended)
+    if (geminiService.isAvailable()) {
+      try {
+        console.log('Using Gemini AI for essay grading...');
+        const rubricText = this.formatRubricForAI(rubric);
+        const result = await geminiService.gradeEssay(question, essay, rubricText, rubric.totalPoints);
+        
+        return this.formatGeminiResult(result, rubric);
+      } catch (error) {
+        console.error('Gemini grading failed, trying OpenAI...', error);
       }
-
-      const data = await response.json();
-      const content = data.choices[0]?.message?.content;
-
-      return this.parseGradingResult(content, rubric);
-    } catch (error) {
-      console.error('Error grading essay:', error);
-      return this.mockGradeEssay(essay, rubric);
     }
+
+    // Fallback to OpenAI if Gemini fails or not available
+    if (this.openaiKey && this.openaiKey !== PLACEHOLDER_OPENAI_KEY) {
+      try {
+        console.log('Using OpenAI for essay grading...');
+        return await this.gradeWithOpenAI(essay, question, rubric);
+      } catch (error) {
+        console.error('OpenAI grading failed, using mock grading...', error);
+      }
+    }
+
+    // Final fallback to mock grading
+    console.log('Using mock grading (no AI API configured)');
+    return this.mockGradeEssay(essay, rubric);
+  }
+
+  /**
+   * Format rubric for AI processing
+   */
+  private formatRubricForAI(rubric: Rubric): string {
+    let text = `${rubric.name} (Total: ${rubric.totalPoints} points)\n\n`;
+    
+    rubric.criteria.forEach((criterion, index) => {
+      text += `${index + 1}. ${criterion.name} (${criterion.maxPoints} points)\n`;
+      text += `   ${criterion.description}\n`;
+      criterion.levels.forEach(level => {
+        text += `   - ${level.points} pts: ${level.description}\n`;
+      });
+      text += '\n';
+    });
+    
+    return text;
+  }
+
+  /**
+   * Format Gemini result to match expected structure
+   */
+  private formatGeminiResult(
+    geminiResult: {
+      score: number;
+      feedback: string;
+      strengths: string[];
+      improvements: string[];
+      breakdown?: Record<string, number>;
+    },
+    rubric: Rubric
+  ): EssayGradeResult {
+    const criteriaScores: CriteriaScore[] = rubric.criteria.map(criterion => {
+      const breakdownKey = criterion.id;
+      const score = geminiResult.breakdown?.[breakdownKey] || 
+                    (geminiResult.score / rubric.totalPoints) * criterion.maxPoints;
+      
+      return {
+        criterionId: criterion.id,
+        criterionName: criterion.name,
+        score: Math.round(score * 10) / 10,
+        maxScore: criterion.maxPoints,
+        feedback: `Score for ${criterion.name}`,
+      };
+    });
+
+    return {
+      score: geminiResult.score,
+      maxScore: rubric.totalPoints,
+      percentage: (geminiResult.score / rubric.totalPoints) * 100,
+      criteriaScores,
+      feedback: geminiResult.feedback,
+      strengths: geminiResult.strengths,
+      improvements: geminiResult.improvements,
+    };
+  }
+
+  /**
+   * Grade essay using OpenAI API
+   */
+  private async gradeWithOpenAI(
+    essay: string,
+    question: string,
+    rubric: Rubric
+  ): Promise<EssayGradeResult> {
+    const prompt = this.buildGradingPrompt(essay, question, rubric);
+
+    const response = await fetch(this.apiEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.openaiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are an expert educational assessor who grades essays fairly and provides constructive feedback.',
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        temperature: 0.3,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const content = data.choices[0]?.message?.content;
+
+    return this.parseGradingResult(content, rubric);
   }
 
   /**

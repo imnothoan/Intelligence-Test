@@ -1,34 +1,45 @@
 # Intelligence Test Platform 🎓
 
-A modern, AI-powered intelligent exam platform built with React, TypeScript, and cutting-edge technologies. This platform implements Computerized Adaptive Testing (CAT) algorithm, features AI-powered question generation, real-time monitoring, and comprehensive analytics with Firebase backend integration.
+A modern, AI-powered intelligent exam platform built with React, TypeScript, and cutting-edge technologies. This platform implements Computerized Adaptive Testing (CAT) algorithm, features AI-powered question generation with **FREE Google Gemini**, real-time monitoring, and comprehensive analytics with Firebase backend integration.
 
 > **🇻🇳 Dành cho người dùng Việt Nam:**  
-> - **[🎯 HƯỚNG DẪN TRAINING AI CHI TIẾT](./docs/vi/TUTORIAL_TRAINING.vi.md)** ⭐ **MỚI!** Giải đáp TẤT CẢ thắc mắc về training
+> - **[🆓 HƯỚNG DẪN GEMINI MIỄN PHÍ](./docs/vi/GEMINI_SETUP.md)** ⭐ **MỚI!** Sử dụng AI hoàn toàn miễn phí
+> - **[🎯 HƯỚNG DẪN TRAINING CHI TIẾT](./docs/vi/COMPLETE_TRAINING_GUIDE.md)** ⭐ Giải đáp TẤT CẢ thắc mắc
 > - **[📖 Hướng dẫn nhanh bằng Tiếng Việt](./QUICKSTART.vi.md)** ⭐ Quick Start
 > - **[📊 Sơ đồ quy trình làm việc](./docs/vi/WORKFLOW_GUIDE.vi.md)** - Trực quan, dễ hiểu
 > - [Hướng dẫn cài đặt Firebase chi tiết](./docs/vi/FIREBASE_SETUP.md)  
-> - [Hướng dẫn tích hợp AI API](./docs/vi/MODEL_TRAINING.md)  
 > - [Tất cả tài liệu Tiếng Việt](./docs/vi/)
 >
-> **💡 Lưu ý quan trọng**: **BẠN KHÔNG CẦN TRAIN AI MODEL!** Hệ thống đã có sẵn tất cả. Chi tiết xem [TUTORIAL_TRAINING.vi.md](./docs/vi/TUTORIAL_TRAINING.vi.md)
+> **💡 Lưu ý quan trọng**: 
+> - ✅ **SỬ DỤNG GEMINI MIỄN PHÍ** - Không cần thẻ tín dụng!
+> - ✅ **KHÔNG CẦN TRAIN MODEL** - Hệ thống đã có sẵn tất cả!
 
 ## ✨ Key Features
 
-### 🔥 Firebase Backend Integration (NEW)
+### 🆓 FREE Google Gemini AI Integration (NEWEST!)
+- **Completely FREE**: No credit card required, 60 requests/minute
+- **Vietnamese Language Support**: Excellent support for Vietnamese content
+- **Question Generation**: Auto-generate multiple-choice and essay questions
+- **Essay Grading**: AI-powered essay evaluation with detailed feedback
+- **Priority Fallback**: Automatically uses Gemini → OpenAI → Mock data
+- **Easy Setup**: Just add API key from Google AI Studio
+
+### 🔥 Firebase Backend Integration
 - **Cloud Data Storage**: Persistent storage using Firebase Firestore
 - **Real-time Synchronization**: Live data updates across devices
-- **Authentication**: Secure user authentication with Firebase Auth
+- **Async Operations**: All data operations properly handle async/await
+- **Error Handling**: Comprehensive error handling and user feedback
 - **Free Tier Support**: Works with Firebase's free tier
 - **Fallback Mode**: Operates in localStorage mode when Firebase is not configured
 
-### 📊 Real-time Instructor Monitoring Dashboard (NEW)
+### 📊 Real-time Instructor Monitoring Dashboard
 - **Live Exam Sessions**: Monitor active exam sessions in real-time
 - **Student Activity Tracking**: Track progress and time elapsed
 - **Warning System**: Real-time alerts for suspicious behavior
 - **Flagged Exams**: Automatic flagging of high-risk attempts
 - **Progress Statistics**: Average progress and completion metrics
 
-### 📈 Advanced Analytics & Reporting (NEW)
+### 📈 Advanced Analytics & Reporting
 - **Comprehensive Statistics**: Detailed exam and student performance metrics
 - **Visual Charts**: Interactive charts using Recharts
 - **Score Distribution**: Analyze score patterns and trends
@@ -36,18 +47,18 @@ A modern, AI-powered intelligent exam platform built with React, TypeScript, and
 - **Question Analysis**: Individual question performance metrics
 - **Export Reports**: Download analytics as CSV files
 
-### 📚 Question Bank Management (NEW)
+### 📚 Question Bank Management
 - **Centralized Repository**: Organize all questions in one place
 - **Search & Filter**: Find questions by topic, type, or difficulty
-- **AI Generation**: Generate questions with AI assistance
+- **AI Generation**: Generate questions with AI assistance (Gemini/OpenAI)
 - **Bulk Operations**: Import/export questions
 - **Difficulty Labeling**: Assign and manage difficulty levels for CAT
 - **Topic Categorization**: Tag questions with topics
 
-### 🤖 Enhanced AI Features (NEW)
+### 🤖 Enhanced AI Features
 - **Advanced Essay Grading**: Rubric-based AI essay evaluation
 - **Semantic Analysis**: Analyze essay content and structure
-- **Multiple LLM Support**: Integration guides for various LLM APIs
+- **Multiple LLM Support**: Gemini (free), OpenAI, and more
 - **Free API Options**: Guides for using free LLM services
 - **CAT Model Training**: Tools and guides for training custom CAT models
 
@@ -72,12 +83,13 @@ A modern, AI-powered intelligent exam platform built with React, TypeScript, and
 - **Frontend Framework**: React 19 with TypeScript
 - **Build Tool**: Vite
 - **Routing**: React Router v7
-- **State Management**: Zustand
+- **State Management**: Zustand with async Firebase integration
 - **Styling**: Tailwind CSS v4
 - **Backend**: Firebase (Firestore, Authentication)
   - **Note**: Images stored as base64 in Firestore (no Storage needed)
 - **AI/ML**: 
-  - OpenAI API (GPT-4 for essay grading, GPT-3.5 for questions)
+  - **Google Gemini API** (FREE - Primary, recommended)
+  - OpenAI API (Optional - Fallback for advanced features)
   - TensorFlow.js
   - BlazeFace (face detection)
 - **Computer Vision**: react-webcam
@@ -87,50 +99,88 @@ A modern, AI-powered intelligent exam platform built with React, TypeScript, and
 
 - Node.js 18+ and npm
 - Modern web browser with webcam support (for anti-cheat features)
+- **Google Gemini API key** (FREE, recommended) - [Get it here](https://makersuite.google.com/app/apikey)
 - Firebase account (free tier supported, optional for dev mode)
-- OpenAI API key (optional, for AI features)
+- OpenAI API key (optional, only for fallback)
 
-## 🚀 Installation
+## 🚀 Quick Start (3 Steps!)
 
-1. Clone the repository:
+### Step 1: Clone and Install
+
 ```bash
 git clone https://github.com/imnothoan/Intelligence-Test.git
 cd Intelligence-Test
-```
-
-2. Install dependencies:
-```bash
 npm install
 ```
 
-3. Configure environment variables:
+### Step 2: Configure FREE Gemini AI
+
 ```bash
+# Copy environment template
 cp .env.example .env
+
+# Edit .env and add your FREE Gemini API key
+# Get it from: https://makersuite.google.com/app/apikey
 ```
 
-Edit `.env` and add your configuration:
-```
-# OpenAI API key (optional)
-VITE_OPENAI_API_KEY=your_openai_api_key_here
+**Minimal `.env` configuration (FREE - No Firebase needed for testing):**
+```env
+# Google Gemini API (REQUIRED - FREE)
+VITE_GEMINI_API_KEY=AIza...your-key-here
 
-# Firebase Configuration (optional)
-# Note: Storage is NOT required - images stored as base64 in database
+# Development mode (uses localStorage)
+VITE_DEV_MODE=true
+```
+
+**Full `.env` configuration (with Firebase for production):**
+```env
+# Google Gemini API (RECOMMENDED - FREE)
+VITE_GEMINI_API_KEY=AIza...your-gemini-key
+
+# Firebase Configuration (optional for dev)
 VITE_FIREBASE_API_KEY=your_firebase_api_key
 VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=your_project_id
 VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 
+# OpenAI (optional - only if you want to use OpenAI instead of Gemini)
+VITE_OPENAI_API_KEY=sk-...your-openai-key
+
 # Development mode (uses localStorage instead of Firebase)
-VITE_DEV_MODE=true
+VITE_DEV_MODE=false
 ```
 
-4. Start the development server:
+### Step 3: Run the Application
+
 ```bash
 npm run dev
 ```
 
-5. Open your browser and navigate to `http://localhost:5173`
+Open your browser and navigate to: **http://localhost:5173**
+
+🎉 **That's it!** You're ready to go!
+
+---
+
+## 📚 Detailed Documentation
+
+### 🆓 Getting FREE Gemini API Key (Recommended)
+
+**See detailed guide**: [docs/vi/GEMINI_SETUP.md](./docs/vi/GEMINI_SETUP.md)
+
+**Quick steps:**
+1. Go to: https://makersuite.google.com/app/apikey
+2. Click "Get API Key" → "Create API key in new project"
+3. Copy the key (starts with `AIza...`)
+4. Add to `.env`: `VITE_GEMINI_API_KEY=AIza...`
+
+**Benefits:**
+- ✅ Completely FREE (no credit card)
+- ✅ 60 requests/minute, 1500/day
+- ✅ Excellent Vietnamese language support
+- ✅ Perfect for schools with <200 students/day
+
 
 ## 🎮 Usage
 
@@ -218,15 +268,49 @@ The platform implements a sophisticated Item Response Theory (IRT) model:
 
 ## 🤖 AI Integration
 
-### Supported LLM Providers
-1. **OpenAI** (GPT-3.5, GPT-4) - Paid with free trial
-2. **Google Gemini** - Free tier available
+### Supported LLM Providers (Priority Order)
+
+1. **Google Gemini** (FREE - Primary, Recommended) ⭐
+2. **OpenAI** (GPT-3.5, GPT-4) - Paid, fallback option
 3. **Hugging Face** - Free open-source models
-4. **Ollama** - Local models (completely free)
+4. **Ollama** - Local models (completely free, offline)
+
+The system automatically tries providers in order:
+**Gemini → OpenAI → Mock Data**
+
+### 🆓 Google Gemini Integration (RECOMMENDED)
+
+**Why Gemini?**
+- ✅ **COMPLETELY FREE** - No credit card required
+- ✅ **Excellent Vietnamese support** - Native understanding
+- ✅ **60 requests/minute** - Perfect for schools
+- ✅ **1,500 requests/day** - Enough for 200+ students
+- ✅ **Easy integration** - Just add API key!
+
+**Quick Setup:**
+```bash
+# 1. Get FREE API key
+Open: https://makersuite.google.com/app/apikey
+Click: "Get API Key" → "Create API key in new project"
+Copy the key (starts with AIza...)
+
+# 2. Add to .env
+VITE_GEMINI_API_KEY=AIza...your-key-here
+
+# 3. Done! System automatically uses Gemini
+```
+
+**Features Powered by Gemini:**
+- ✨ Question Generation (multiple-choice & essay)
+- 📝 Essay Grading with rubrics
+- 💬 Student Feedback Generation
+- 📚 Topic Explanations
+
+**See detailed guide**: [docs/vi/GEMINI_SETUP.md](./docs/vi/GEMINI_SETUP.md)
 
 ### 🆓 How to Use FREE LLM APIs
 
-#### Option 1: Google Gemini (Recommended for Free Tier)
+#### Option 1: Google Gemini (Recommended - Already Integrated!)
 **Best for:** Vietnamese users, completely free with generous limits
 
 1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
@@ -318,32 +402,119 @@ const response = await fetch(
    ```
 4. **Free Tier:** 30 requests per minute
 
-### 🎓 How to Train AI for This Platform
+---
+
+## ❌ Do You Need to Train AI Models?
+
+### **NO! You DON'T need to train anything!**
+
+The platform comes **ready to use** with:
+
+✅ **CAT Algorithm** - Works with manual difficulty assignment  
+✅ **Anti-Cheat** - Uses pre-trained BlazeFace from Google  
+✅ **Question Generation** - Uses Gemini/OpenAI APIs (no training)  
+✅ **Essay Grading** - Uses Gemini/OpenAI APIs (no training)  
+
+### 99% of Users: Just Use the Platform!
+
+**What you need:**
+1. ✅ Install the app (`npm install`)
+2. ✅ Add Gemini API key (FREE)
+3. ✅ Start using! (`npm run dev`)
+
+**What you DON'T need:**
+- ❌ Train any models
+- ❌ Collect datasets
+- ❌ Use Google Colab
+- ❌ Python/Machine Learning knowledge
+
+### When Would You Train? (Optional - Advanced Users Only)
+
+**Only train if:**
+1. **CAT Calibration** - After 3-6 months with 100+ students → Improve accuracy
+2. **Custom Anti-Cheat** - Detect school-specific cheating patterns
+3. **Domain-Specific LLM** - Very specialized subject matter (medical, legal)
+
+**See comprehensive guide**: [docs/vi/COMPLETE_TRAINING_GUIDE.md](./docs/vi/COMPLETE_TRAINING_GUIDE.md)
+
+---
+
+## 🎓 How to Use AI Features (No Training Required!)
+
+### Using Gemini for Question Generation
+
+The system automatically uses Gemini when you click "Generate Questions with AI" in the UI.
+
+**Behind the scenes:**
+```javascript
+import { geminiService } from '@/services/geminiService';
+
+// Generates questions automatically
+const questions = await geminiService.generateQuestions(
+  'Mathematics',  // topic
+  5,             // count
+  0.5,           // difficulty (0.0 - 1.0)
+  'multiple-choice',
+  'vi'           // Vietnamese
+);
+```
+
+### Using Gemini for Essay Grading
+
+The system automatically grades essays using Gemini when students submit.
+
+```javascript
+// Automatically grades with detailed feedback
+const result = await geminiService.gradeEssay(
+  question,
+  studentAnswer,
+  rubric,
+  maxScore
+);
+
+// Returns:
+// - score: number
+// - feedback: string
+// - strengths: string[]
+// - improvements: string[]
+```
+
+### Manual CAT Calibration (No Training!)
+
+**Quick Start Method:**
+1. When creating questions, assign difficulty:
+   - **Easy (0.0-0.3)**: Basic concepts
+   - **Medium (0.3-0.7)**: Application
+   - **Hard (0.7-1.0)**: Analysis/Synthesis
+
+**That's it!** The CAT algorithm works immediately.
+
+### 🎓 Advanced: Training AI Models (Optional)
 
 #### Training the CAT Algorithm
 
 The CAT (Computerized Adaptive Testing) algorithm needs question difficulty parameters. Here's how to calibrate them:
 
-1. **Manual Calibration** (Quick Start):
+1. **Manual Calibration** (Quick Start - RECOMMENDED):
    - Easy questions: Set difficulty to 0.2
    - Medium questions: Set difficulty to 0.5
    - Hard questions: Set difficulty to 0.8
 
-2. **Data-Based Calibration** (Recommended):
+2. **Data-Based Calibration** (After collecting data):
    ```python
-   # See docs/vi/MODEL_TRAINING.md for full script
+   # See docs/vi/COMPLETE_TRAINING_GUIDE.md for full script
    # Calculate difficulty based on student responses
    difficulty = 1 - (correct_answers / total_attempts)
    ```
 
-3. **IRT-Based Calibration** (Advanced):
+3. **IRT-Based Calibration** (Expert Level):
    - Collect 100+ responses per question
    - Use IRT libraries (e.g., `mirt` in R or `py-irt` in Python)
    - Export difficulty parameters to JSON
 
 #### Training Anti-Cheat AI Models
 
-**Option 1: Use Pre-trained Models** (Easiest)
+**Option 1: Use Pre-trained Models** (Easiest - RECOMMENDED)
 The platform uses BlazeFace which is pre-trained and works out of the box.
 
 **Option 2: Custom Training with TensorFlow**
