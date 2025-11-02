@@ -12,7 +12,7 @@ export default function UserGuide() {
 
   const sections = [
     { id: 'overview', title: 'Overview', icon: '📋' },
-    { id: 'do-i-need-training', title: '❓ Do I Need Training?', icon: '⚠️' },
+    { id: 'do-i-need-training', title: 'Do I Need Training?', icon: '❓' },
     { id: 'getting-started', title: 'Getting Started', icon: '🚀' },
     { id: 'cat-algorithm', title: 'CAT Algorithm', icon: '🎯' },
     { id: 'llm-integration', title: 'LLM Integration', icon: '🤖' },
@@ -46,10 +46,10 @@ export default function UserGuide() {
       </div>
 
       {/* Important Notice Banner */}
-      <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white">
+      <div className="bg-red-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-start gap-4">
-            <div className="text-3xl">⚠️</div>
+            <div className="text-3xl" role="img" aria-label="Warning">⚠️</div>
             <div className="flex-1">
               <h2 className="text-xl font-bold mb-2">Important: You DON'T Need to Train AI Models!</h2>
               <p className="text-sm mb-3">
@@ -63,7 +63,7 @@ export default function UserGuide() {
               </ul>
               <button
                 onClick={() => setActiveSection('do-i-need-training')}
-                className="px-4 py-2 bg-white text-red-600 rounded-lg font-semibold text-sm hover:bg-gray-100"
+                className="px-4 py-2 bg-white text-red-600 rounded-lg font-semibold text-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-600"
               >
                 📖 Read: "Do I Need Training?" Section
               </button>
