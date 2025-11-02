@@ -1,70 +1,100 @@
 import { Question } from '@/types';
+import { geminiService } from './geminiService';
 
 /**
  * AI Service for Question Generation
- * This service can integrate with OpenAI API or other AI models
+ * Supports multiple AI providers with automatic fallback:
+ * 1. Google Gemini (Free, recommended)
+ * 2. OpenAI (Paid)
+ * 3. Mock questions (fallback)
  */
 
 export class AIQuestionGenerator {
-  private apiKey: string;
+  private openaiKey: string;
   private apiEndpoint: string;
 
-  constructor(apiKey: string = '') {
-    this.apiKey = apiKey || import.meta.env.VITE_OPENAI_API_KEY || '';
+  constructor() {
+    this.openaiKey = import.meta.env.VITE_OPENAI_API_KEY || '';
     this.apiEndpoint = 'https://api.openai.com/v1/chat/completions';
   }
 
   /**
    * Generate questions based on topic and difficulty
+   * Automatically tries Gemini first (free), then OpenAI, then mock data
    */
   async generateQuestions(
     topic: string,
     count: number = 5,
     difficulty: number = 0.5,
-    type: 'multiple-choice' | 'essay' = 'multiple-choice'
+    type: 'multiple-choice' | 'essay' = 'multiple-choice',
+    language: 'vi' | 'en' = 'vi'
   ): Promise<Question[]> {
-    if (!this.apiKey) {
-      // Return mock questions if no API key
-      return this.generateMockQuestions(topic, count, difficulty, type);
-    }
-
-    try {
-      const prompt = this.buildPrompt(topic, count, difficulty, type);
-      
-      const response = await fetch(this.apiEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`,
-        },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are an expert educational content creator that generates high-quality exam questions.',
-            },
-            {
-              role: 'user',
-              content: prompt,
-            },
-          ],
-          temperature: 0.7,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`API request failed: ${response.statusText}`);
+    // Try Gemini first (free and recommended)
+    if (geminiService.isAvailable()) {
+      try {
+        console.log('Using Gemini AI for question generation...');
+        return await geminiService.generateQuestions(topic, count, difficulty, type, language);
+      } catch (error) {
+        console.error('Gemini generation failed, trying OpenAI...', error);
       }
-
-      const data = await response.json();
-      const content = data.choices[0]?.message?.content;
-      
-      return this.parseGeneratedQuestions(content, topic, difficulty);
-    } catch (error) {
-      console.error('Error generating questions:', error);
-      return this.generateMockQuestions(topic, count, difficulty, type);
     }
+
+    // Fallback to OpenAI if Gemini fails or not available
+    if (this.openaiKey && this.openaiKey !== 'your_openai_api_key_here') {
+      try {
+        console.log('Using OpenAI for question generation...');
+        return await this.generateWithOpenAI(topic, count, difficulty, type);
+      } catch (error) {
+        console.error('OpenAI generation failed, using mock questions...', error);
+      }
+    }
+
+    // Final fallback to mock questions
+    console.log('Using mock questions (no AI API configured)');
+    return this.generateMockQuestions(topic, count, difficulty, type);
+  }
+
+  /**
+   * Generate questions using OpenAI API
+   */
+  private async generateWithOpenAI(
+    topic: string,
+    count: number,
+    difficulty: number,
+    type: 'multiple-choice' | 'essay'
+  ): Promise<Question[]> {
+    const prompt = this.buildPrompt(topic, count, difficulty, type);
+    
+    const response = await fetch(this.apiEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.openaiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are an expert educational content creator that generates high-quality exam questions.',
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        temperature: 0.7,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const content = data.choices[0]?.message?.content;
+    
+    return this.parseGeneratedQuestions(content, topic, difficulty);
   }
 
   /**
