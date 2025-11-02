@@ -3,6 +3,7 @@ import { User, Exam, Class, ExamAttempt } from '@/types';
 
 interface AppState {
   // User state
+  users: User[];
   currentUser: User | null;
   isAuthenticated: boolean;
   
@@ -19,6 +20,7 @@ interface AppState {
   currentAttempt: ExamAttempt | null;
   
   // Actions
+  addUser: (user: User) => void;
   setCurrentUser: (user: User | null) => void;
   login: (email: string, password: string, role: 'instructor' | 'student') => Promise<void>;
   logout: () => void;
@@ -39,6 +41,7 @@ interface AppState {
 
 export const useStore = create<AppState>((set) => ({
   // Initial state
+  users: [],
   currentUser: null,
   isAuthenticated: false,
   exams: [],
@@ -49,6 +52,10 @@ export const useStore = create<AppState>((set) => ({
   currentAttempt: null,
 
   // User actions
+  addUser: (user) => set((state) => ({ 
+    users: [...state.users, user] 
+  })),
+  
   setCurrentUser: (user) => set({ currentUser: user, isAuthenticated: !!user }),
   
   login: async (email, _password, role) => {
