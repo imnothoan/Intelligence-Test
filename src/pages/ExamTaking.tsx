@@ -32,11 +32,17 @@ const ExamTaking: React.FC = () => {
   // Initialize exam attempt
   useEffect(() => {
     if (exam && currentUser && !attempt) {
-      startExamAttempt(exam.id, currentUser.id).then(newAttempt => {
-        setAttempt(newAttempt);
-      });
+      startExamAttempt(exam.id, currentUser.id)
+        .then(newAttempt => {
+          setAttempt(newAttempt);
+        })
+        .catch(error => {
+          console.error('Failed to start exam attempt:', error);
+          alert('Failed to start exam. Please try again.');
+          navigate(-1); // Go back if attempt creation fails
+        });
     }
-  }, [exam, currentUser, attempt, startExamAttempt]);
+  }, [exam, currentUser, attempt, startExamAttempt, navigate]);
 
   // Initialize anti-cheat if enabled
   useEffect(() => {

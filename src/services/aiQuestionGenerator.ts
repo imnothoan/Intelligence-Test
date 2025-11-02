@@ -9,6 +9,9 @@ import { geminiService } from './geminiService';
  * 3. Mock questions (fallback)
  */
 
+// Constants
+const PLACEHOLDER_OPENAI_KEY = 'your_openai_api_key_here';
+
 export class AIQuestionGenerator {
   private openaiKey: string;
   private apiEndpoint: string;
@@ -40,7 +43,7 @@ export class AIQuestionGenerator {
     }
 
     // Fallback to OpenAI if Gemini fails or not available
-    if (this.openaiKey && this.openaiKey !== 'your_openai_api_key_here') {
+    if (this.openaiKey && this.openaiKey !== PLACEHOLDER_OPENAI_KEY) {
       try {
         console.log('Using OpenAI for question generation...');
         return await this.generateWithOpenAI(topic, count, difficulty, type);

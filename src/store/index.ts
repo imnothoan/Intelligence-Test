@@ -267,7 +267,7 @@ export const useStore = create<AppState>((set, get) => ({
     } catch (error) {
       console.error('Error starting exam attempt:', error);
       set({ error: error instanceof Error ? error.message : 'Failed to start exam' });
-      return attempt;
+      throw error; // Re-throw to let caller handle it
     }
   },
   

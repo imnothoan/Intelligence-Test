@@ -8,6 +8,9 @@
 
 import { geminiService } from './geminiService';
 
+// Constants
+const PLACEHOLDER_OPENAI_KEY = 'your_openai_api_key_here';
+
 export interface Rubric {
   id: string;
   name: string;
@@ -78,7 +81,7 @@ class EssayGradingService {
     }
 
     // Fallback to OpenAI if Gemini fails or not available
-    if (this.openaiKey && this.openaiKey !== 'your_openai_api_key_here') {
+    if (this.openaiKey && this.openaiKey !== PLACEHOLDER_OPENAI_KEY) {
       try {
         console.log('Using OpenAI for essay grading...');
         return await this.gradeWithOpenAI(essay, question, rubric);

@@ -10,6 +10,9 @@ import { Question } from '@/types';
  * - Perfect for educational applications
  */
 
+// Constants
+const PLACEHOLDER_API_KEY = 'your_gemini_api_key_here';
+
 export class GeminiService {
   private genAI: GoogleGenerativeAI | null = null;
   private model: GenerativeModel | null = null;
@@ -18,7 +21,7 @@ export class GeminiService {
   constructor() {
     this.apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
     
-    if (this.apiKey && this.apiKey !== 'your_gemini_api_key_here') {
+    if (this.apiKey && this.apiKey !== PLACEHOLDER_API_KEY) {
       this.genAI = new GoogleGenerativeAI(this.apiKey);
       this.model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
     }
@@ -327,13 +330,14 @@ Chỉ trả về JSON, không thêm text khác.`;
       
       jsonText = jsonText.trim();
       
-      // Try to find JSON array
-      const jsonMatch = jsonText.match(/\[[\s\S]*\]/);
-      if (!jsonMatch) {
+      // Try to find JSON array with more precise pattern
+      // Look for array that starts with [ and ends with ] at the same nesting level
+      const arrayMatch = jsonText.match(/\[\s*\{[\s\S]*?\}\s*\]/);
+      if (!arrayMatch) {
         throw new Error('No JSON array found in response');
       }
 
-      const parsed = JSON.parse(jsonMatch[0]);
+      const parsed = JSON.parse(arrayMatch[0]);
       
       if (!Array.isArray(parsed)) {
         throw new Error('Response is not an array');
