@@ -22,11 +22,13 @@ Complete guide to setting up Firebase backend for the platform.
 
 **Topics covered:**
 - Creating Firebase project
-- Configuring Authentication, Firestore, and Storage
+- Configuring Authentication and Firestore
 - Getting and using Firebase JSON configuration
-- Setting up security rules
+- Setting up security rules (Storage NOT needed)
 - Testing connection
 - Troubleshooting common issues
+
+**Note:** Firebase Storage is not required as images are stored as base64 in Firestore.
 
 ### 2. Model Training & API Integration / Training Model & Tích Hợp API
 
@@ -149,8 +151,9 @@ Learn how to:
 
 ### Firebase
 - **Free Tier:** Sufficient for small to medium schools
-- **Backend Services:** Authentication, Database, Storage
+- **Backend Services:** Authentication, Database (images stored as base64)
 - **Real-time Sync:** Live updates across devices
+- **No Storage Needed:** Save costs by storing images in Firestore
 
 ### CAT Algorithm
 - **Adaptive Testing:** Questions adjust to student ability

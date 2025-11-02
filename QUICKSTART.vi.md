@@ -98,7 +98,8 @@ Mở trình duyệt: http://localhost:5173
 3. **Bật các Services:**
    - **Authentication** → Enable Email/Password
    - **Firestore Database** → Create database (test mode)
-   - **Storage** → Get started (test mode)
+
+**Lưu ý quan trọng**: KHÔNG cần thiết lập Firebase Storage! Hệ thống lưu hình ảnh dưới dạng base64 trong Firestore Database để tiết kiệm chi phí.
 
 📖 **Xem hướng dẫn chi tiết:** [docs/vi/FIREBASE_SETUP.md](./docs/vi/FIREBASE_SETUP.md)
 

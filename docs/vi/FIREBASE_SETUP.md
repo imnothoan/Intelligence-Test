@@ -14,13 +14,13 @@
 Firebase là nền tảng backend miễn phí của Google, cung cấp các dịch vụ:
 - **Authentication**: Xác thực người dùng
 - **Firestore Database**: Cơ sở dữ liệu NoSQL
-- **Storage**: Lưu trữ file, hình ảnh
 - **Hosting**: Triển khai ứng dụng web
+
+**Lưu ý quan trọng**: Hệ thống **KHÔNG** sử dụng Firebase Storage để tiết kiệm chi phí. Tất cả hình ảnh (như ảnh chụp màn hình anti-cheat) được lưu trữ dưới dạng base64 string trực tiếp trong Firestore Database.
 
 **Gói miễn phí (Spark Plan) bao gồm:**
 - 1 GB dữ liệu Firestore
 - 50,000 lượt đọc/ngày, 20,000 lượt ghi/ngày
-- 5 GB Storage
 - Đủ cho trường học nhỏ và vừa
 
 ## Tạo Project Firebase
@@ -74,13 +74,7 @@ Firebase là nền tảng backend miễn phí của Google, cung cấp các dị
    - `asia-east1` (Taiwan)
 5. Nhấn **"Enable"**
 
-### Storage (Lưu Trữ File)
-
-1. Trong sidebar, chọn **"Storage"**
-2. Nhấn **"Get started"**
-3. Chọn **"Start in test mode"**
-4. Chọn **cùng location** với Firestore
-5. Nhấn **"Done"**
+**Xong!** Bạn không cần thiết lập Firebase Storage vì hệ thống lưu trữ hình ảnh dưới dạng base64 trong Firestore Database, giúp tiết kiệm chi phí.
 
 ## Lấy File JSON Configuration
 
@@ -97,11 +91,12 @@ const firebaseConfig = {
   apiKey: "AIzaSyBxxx-xxxxxxxxxxxxxxxxxxxxxxxx",
   authDomain: "your-project.firebaseapp.com",
   projectId: "your-project-id",
-  storageBucket: "your-project.appspot.com",
   messagingSenderId: "123456789012",
   appId: "1:123456789012:web:abc123def456"
 };
 ```
+
+**Lưu ý**: Bạn có thể bỏ qua trường `storageBucket` nếu có, vì hệ thống không sử dụng Firebase Storage.
 
 ### Cách 2: Download google-services.json (Mobile)
 
@@ -130,10 +125,10 @@ Mở file `.env` và điền các giá trị từ Firebase Config:
 VITE_OPENAI_API_KEY=your_openai_api_key_here
 
 # Firebase Configuration
+# Lưu ý: KHÔNG cần VITE_FIREBASE_STORAGE_BUCKET vì hệ thống lưu ảnh dưới dạng base64 trong database
 VITE_FIREBASE_API_KEY=AIzaSyBxxx-xxxxxxxxxxxxxxxxxxxxxxxx
 VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=your-project-id
-VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
 VITE_FIREBASE_MESSAGING_SENDER_ID=123456789012
 VITE_FIREBASE_APP_ID=1:123456789012:web:abc123def456
 
@@ -150,13 +145,11 @@ File `src/config/firebase.ts` sẽ tự động đọc các biến môi trườn
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
@@ -165,7 +158,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-export const storage = getStorage(app);
+
+// Lưu ý: Không có storage - hình ảnh được lưu dưới dạng base64 trong Firestore
 ```
 
 ## Thiết Lập Security Rules
@@ -218,28 +212,6 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow create, update, delete: if request.auth != null && 
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'instructor';
-    }
-  }
-}
-```
-
-3. Nhấn **"Publish"**
-
-### Storage Security Rules
-
-1. Vào **Storage** → **Rules**
-2. Thay thế rules:
-
-```javascript
-rules_version = '2';
-service firebase.storage {
-  match /b/{bucket}/o {
-    // Chỉ authenticated users mới upload được
-    match /{allPaths=**} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null &&
-        request.resource.size < 5 * 1024 * 1024 && // Tối đa 5MB
-        request.resource.contentType.matches('image/.*'); // Chỉ nhận ảnh
     }
   }
 }
@@ -302,8 +274,9 @@ Mở DevTools (F12) và kiểm tra console:
 1. Vào Firebase Console → **Usage and billing**
 2. Theo dõi:
    - Firestore reads/writes
-   - Storage usage
    - Authentication usage
+
+**Lưu ý**: Không có chi phí Storage vì hệ thống lưu hình ảnh dưới dạng base64 trong Firestore.
 
 ### Tối Ưu Chi Phí
 
