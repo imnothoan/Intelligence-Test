@@ -4,12 +4,21 @@
 
 Tài liệu này cung cấp hướng dẫn nhanh để bắt đầu với Intelligence Test Platform.
 
+> 🔥 **QUAN TRỌNG - ĐỌC TRƯỚC KHI BẮT ĐẦU:**
+> 
+> **❌ BẠN KHÔNG CẦN TRAIN AI MODEL!**
+> 
+> Hệ thống đã có sẵn tất cả AI cần thiết. Chỉ cần:
+> 1. Chạy `npm install && npm run dev`
+> 2. (Tùy chọn) Thêm API key để dùng AI features
+> 
+> 👉 **Đọc ngay: [TUTORIAL_TRAINING.vi.md](./docs/vi/TUTORIAL_TRAINING.vi.md)** - Hướng dẫn chi tiết từ A-Z
+
 ### 📚 Tài Liệu Chi Tiết
 
-Xem tài liệu đầy đủ tại: **[docs/vi/](./docs/vi/)**
-
-- **[Hướng Dẫn Cài Đặt Firebase](./docs/vi/FIREBASE_SETUP.md)** - Chi tiết từng bước
-- **[Hướng Dẫn Training Models & API](./docs/vi/MODEL_TRAINING.md)** - Training và tích hợp AI
+- 🎯 **[TUTORIAL TRAINING - BẮT ĐẦU TẠI ĐÂY](./docs/vi/TUTORIAL_TRAINING.vi.md)** - **MỚI!** Hướng dẫn từng bước, giải đáp TẤT CẢ thắc mắc
+- 📖 **[Hướng Dẫn Cài Đặt Firebase](./docs/vi/FIREBASE_SETUP.md)** - Chi tiết từng bước
+- 🤖 **[Hướng Dẫn AI & API](./docs/vi/MODEL_TRAINING.md)** - Tích hợp AI (không cần training)
 
 ---
 
@@ -332,6 +341,14 @@ Hệ thống sử dụng BlazeFace (Google) - model đã được train sẵn đ
    ```
 
 3. **Model sẽ tự động convert sang TensorFlow.js và lưu vào `/public/models/`**
+
+4. **Sử dụng model đã train:**
+   - Model đã có trong `public/models/anticheat/`
+   - App tự động load khi khởi động
+   - Bật "Anti-Cheat Monitoring" khi tạo đề thi
+   - Hệ thống sẽ dùng model custom của bạn thay vì BlazeFace
+
+**Xem chi tiết:** [TUTORIAL_TRAINING.vi.md - Phần 4.1](./docs/vi/TUTORIAL_TRAINING.vi.md)
 
 ### 📝 3. Training Essay Grading (Chấm điểm tự luận)
 

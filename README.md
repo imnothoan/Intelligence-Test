@@ -3,10 +3,14 @@
 A modern, AI-powered intelligent exam platform built with React, TypeScript, and cutting-edge technologies. This platform implements Computerized Adaptive Testing (CAT) algorithm, features AI-powered question generation, real-time monitoring, and comprehensive analytics with Firebase backend integration.
 
 > **🇻🇳 Dành cho người dùng Việt Nam:**  
-> - **[📖 Hướng dẫn nhanh bằng Tiếng Việt](./QUICKSTART.vi.md)** ⭐ BẮT ĐẦU TẠI ĐÂY
+> - **[🎯 HƯỚNG DẪN TRAINING AI CHI TIẾT](./docs/vi/TUTORIAL_TRAINING.vi.md)** ⭐ **MỚI!** Giải đáp TẤT CẢ thắc mắc về training
+> - **[📖 Hướng dẫn nhanh bằng Tiếng Việt](./QUICKSTART.vi.md)** ⭐ Quick Start
+> - **[📊 Sơ đồ quy trình làm việc](./docs/vi/WORKFLOW_GUIDE.vi.md)** - Trực quan, dễ hiểu
 > - [Hướng dẫn cài đặt Firebase chi tiết](./docs/vi/FIREBASE_SETUP.md)  
-> - [Hướng dẫn training models và tích hợp API](./docs/vi/MODEL_TRAINING.md)  
+> - [Hướng dẫn tích hợp AI API](./docs/vi/MODEL_TRAINING.md)  
 > - [Tất cả tài liệu Tiếng Việt](./docs/vi/)
+>
+> **💡 Lưu ý quan trọng**: **BẠN KHÔNG CẦN TRAIN AI MODEL!** Hệ thống đã có sẵn tất cả. Chi tiết xem [TUTORIAL_TRAINING.vi.md](./docs/vi/TUTORIAL_TRAINING.vi.md)
 
 ## ✨ Key Features
 
