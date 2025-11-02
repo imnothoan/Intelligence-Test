@@ -38,23 +38,26 @@ const InstructorDashboard: React.FC = () => {
   const instructorClasses = classes.filter(cls => cls.instructorId === currentUser?.id);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <header className="bg-slate-800 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">
-              Instructor Dashboard
-            </h1>
+            <div>
+              <h1 className="text-2xl font-bold text-white">
+                Bảng Điều Khiển Giảng Viên
+              </h1>
+              <p className="text-slate-300 text-sm mt-1">Nền Tảng Khảo Thí Thông Minh</p>
+            </div>
             <div className="flex items-center gap-4">
-              <span className="text-gray-700">
-                Welcome, {currentUser?.name}
+              <span className="text-white">
+                {currentUser?.name}
               </span>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                className="px-4 py-2 bg-white text-slate-800 rounded-lg hover:bg-gray-100 font-medium transition"
               >
-                Logout
+                Đăng Xuất
               </button>
             </div>
           </div>
@@ -66,45 +69,41 @@ const InstructorDashboard: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <button
             onClick={() => navigate('/instructor/exam/create')}
-            className="p-6 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+            className="p-6 bg-white border-2 border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:border-slate-400 transition text-left"
           >
-            <div className="text-3xl mb-2">📝</div>
-            <h3 className="text-lg font-semibold">Create Exam</h3>
-            <p className="text-sm mt-2 opacity-90">
-              AI-powered question generation
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Tạo Đề Thi</h3>
+            <p className="text-sm text-gray-600">
+              Tạo bài kiểm tra với AI
             </p>
           </button>
 
           <button
             onClick={() => navigate('/instructor/question-bank')}
-            className="p-6 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition"
+            className="p-6 bg-white border-2 border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:border-slate-400 transition text-left"
           >
-            <div className="text-3xl mb-2">📚</div>
-            <h3 className="text-lg font-semibold">Question Bank</h3>
-            <p className="text-sm mt-2 opacity-90">
-              Manage question repository
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Ngân Hàng Câu Hỏi</h3>
+            <p className="text-sm text-gray-600">
+              Quản lý kho câu hỏi
             </p>
           </button>
 
           <button
             onClick={() => navigate('/instructor/monitoring')}
-            className="p-6 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
+            className="p-6 bg-white border-2 border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:border-slate-400 transition text-left"
           >
-            <div className="text-3xl mb-2">📊</div>
-            <h3 className="text-lg font-semibold">Monitor Exams</h3>
-            <p className="text-sm mt-2 opacity-90">
-              Real-time exam monitoring
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Giám Sát</h3>
+            <p className="text-sm text-gray-600">
+              Theo dõi bài thi trực tiếp
             </p>
           </button>
 
           <button
             onClick={() => navigate('/instructor/analytics')}
-            className="p-6 bg-orange-600 text-white rounded-lg shadow hover:bg-orange-700 transition"
+            className="p-6 bg-white border-2 border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:border-slate-400 transition text-left"
           >
-            <div className="text-3xl mb-2">📈</div>
-            <h3 className="text-lg font-semibold">Analytics</h3>
-            <p className="text-sm mt-2 opacity-90">
-              Advanced reports & insights
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Phân Tích</h3>
+            <p className="text-sm text-gray-600">
+              Báo cáo và thống kê
             </p>
           </button>
         </div>
@@ -113,59 +112,56 @@ const InstructorDashboard: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <button
             onClick={() => setShowCreateClass(true)}
-            className="p-4 bg-white border-2 border-indigo-600 text-indigo-600 rounded-lg shadow hover:bg-indigo-50 transition"
+            className="p-4 bg-white border-2 border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:border-slate-400 transition text-left"
           >
-            <div className="text-2xl mb-2">👥</div>
-            <h3 className="font-semibold">Create Class</h3>
-            <p className="text-sm mt-1">
-              Set up new class
+            <h3 className="font-semibold text-gray-900 mb-1">Tạo Lớp Học</h3>
+            <p className="text-sm text-gray-600">
+              Thiết lập lớp học mới
             </p>
           </button>
 
           <button
             onClick={() => navigate('/guide')}
-            className="p-4 bg-white border-2 border-blue-600 text-blue-600 rounded-lg shadow hover:bg-blue-50 transition"
+            className="p-4 bg-white border-2 border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:border-slate-400 transition text-left"
           >
-            <div className="text-2xl mb-2">📖</div>
-            <h3 className="font-semibold">User Guide</h3>
-            <p className="text-sm mt-1">
-              Learn about features
+            <h3 className="font-semibold text-gray-900 mb-1">Hướng Dẫn</h3>
+            <p className="text-sm text-gray-600">
+              Tìm hiểu các tính năng
             </p>
           </button>
 
-          <div className="p-4 bg-white border-2 border-gray-300 text-gray-700 rounded-lg shadow">
-            <div className="text-2xl mb-2">🔥</div>
-            <h3 className="font-semibold">Firebase Enabled</h3>
-            <p className="text-sm mt-1">
-              Cloud sync active
+          <div className="p-4 bg-slate-50 border-2 border-slate-200 rounded-lg">
+            <h3 className="font-semibold text-gray-900 mb-1">Trạng Thái</h3>
+            <p className="text-sm text-gray-600">
+              Đồng bộ hóa đám mây
             </p>
           </div>
         </div>
 
         {/* Classes Section */}
         <section className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">My Classes</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Lớp Học Của Tôi</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {instructorClasses.length === 0 ? (
-              <p className="text-gray-600 col-span-full">
-                No classes yet. Create your first class to get started!
+              <p className="text-gray-600 col-span-full bg-white p-6 rounded-lg border-2 border-gray-200">
+                Chưa có lớp học nào. Tạo lớp học đầu tiên!
               </p>
             ) : (
               instructorClasses.map((cls) => (
                 <div
                   key={cls.id}
-                  className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition cursor-pointer"
+                  className="bg-white p-6 rounded-lg border-2 border-gray-200 hover:border-slate-400 hover:shadow-md transition cursor-pointer"
                   onClick={() => navigate(`/instructor/class/${cls.id}`)}
                 >
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
                     {cls.name}
                   </h3>
                   <p className="text-gray-600 text-sm mb-4">
                     {cls.description}
                   </p>
                   <div className="flex justify-between text-sm text-gray-500">
-                    <span>{cls.students.length} students</span>
-                    <span>{cls.exams.length} exams</span>
+                    <span>{cls.students.length} sinh viên</span>
+                    <span>{cls.exams.length} bài thi</span>
                   </div>
                 </div>
               ))
@@ -175,44 +171,44 @@ const InstructorDashboard: React.FC = () => {
 
         {/* Exams Section */}
         <section>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">My Exams</h2>
-          <div className="bg-white rounded-lg shadow overflow-hidden">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Đề Thi Của Tôi</h2>
+          <div className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden">
             {instructorExams.length === 0 ? (
               <p className="p-6 text-gray-600">
-                No exams yet. Create your first exam!
+                Chưa có đề thi nào. Tạo đề thi đầu tiên của bạn!
               </p>
             ) : (
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+                <thead className="bg-slate-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Title
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">
+                      Tiêu Đề
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Questions
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">
+                      Số Câu Hỏi
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Duration
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">
+                      Thời Gian
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      CAT Enabled
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">
+                      CAT
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {instructorExams.map((exam) => (
-                    <tr key={exam.id} className="hover:bg-gray-50">
+                    <tr key={exam.id} className="hover:bg-slate-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {exam.title}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                         {exam.questions.length}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {exam.duration} min
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        {exam.duration} phút
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {exam.isAdaptive ? '✅ Yes' : '❌ No'}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        {exam.isAdaptive ? 'Có' : 'Không'}
                       </td>
                     </tr>
                   ))}
@@ -227,44 +223,44 @@ const InstructorDashboard: React.FC = () => {
       {showCreateClass && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-8 max-w-md w-full">
-            <h2 className="text-2xl font-bold mb-4">Create New Class</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Tạo Lớp Học Mới</h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Class Name
+                  Tên Lớp Học
                 </label>
                 <input
                   type="text"
                   value={className}
                   onChange={(e) => setClassName(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="e.g., Advanced Mathematics"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"
+                  placeholder="Ví dụ: Toán Cao Cấp A1"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Description
+                  Mô Tả
                 </label>
                 <textarea
                   value={classDescription}
                   onChange={(e) => setClassDescription(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none"
                   rows={3}
-                  placeholder="Brief description of the class"
+                  placeholder="Mô tả ngắn về lớp học"
                 />
               </div>
               <div className="flex gap-4">
                 <button
                   onClick={handleCreateClass}
-                  className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+                  className="flex-1 bg-slate-800 text-white py-2 rounded-lg hover:bg-slate-900"
                 >
-                  Create
+                  Tạo Lớp
                 </button>
                 <button
                   onClick={() => setShowCreateClass(false)}
-                  className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400"
+                  className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300"
                 >
-                  Cancel
+                  Hủy
                 </button>
               </div>
             </div>
