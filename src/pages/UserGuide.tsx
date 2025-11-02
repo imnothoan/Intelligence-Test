@@ -12,6 +12,7 @@ export default function UserGuide() {
 
   const sections = [
     { id: 'overview', title: 'Overview', icon: '📋' },
+    { id: 'do-i-need-training', title: '❓ Do I Need Training?', icon: '⚠️' },
     { id: 'getting-started', title: 'Getting Started', icon: '🚀' },
     { id: 'cat-algorithm', title: 'CAT Algorithm', icon: '🎯' },
     { id: 'llm-integration', title: 'LLM Integration', icon: '🤖' },
@@ -40,6 +41,33 @@ export default function UserGuide() {
             >
               Back
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Important Notice Banner */}
+      <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-start gap-4">
+            <div className="text-3xl">⚠️</div>
+            <div className="flex-1">
+              <h2 className="text-xl font-bold mb-2">Important: You DON'T Need to Train AI Models!</h2>
+              <p className="text-sm mb-3">
+                <strong>90% of users don't need any training.</strong> The system works immediately with:
+              </p>
+              <ul className="text-sm space-y-1 mb-3">
+                <li>✅ Built-in anti-cheat detection (BlazeFace)</li>
+                <li>✅ AI question generation (just add free Gemini API key)</li>
+                <li>✅ Essay auto-grading (same API key)</li>
+                <li>✅ CAT adaptive testing (built-in)</li>
+              </ul>
+              <button
+                onClick={() => setActiveSection('do-i-need-training')}
+                className="px-4 py-2 bg-white text-red-600 rounded-lg font-semibold text-sm hover:bg-gray-100"
+              >
+                📖 Read: "Do I Need Training?" Section
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -100,6 +128,122 @@ export default function UserGuide() {
                       <strong>AI/ML:</strong> OpenAI API, TensorFlow.js, BlazeFace<br />
                       <strong>Analytics:</strong> Recharts for data visualization
                     </p>
+                  </div>
+                </div>
+              )}
+
+              {activeSection === 'do-i-need-training' && (
+                <div className="prose max-w-none">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">❓ Do I Need to Train AI Models?</h2>
+                  
+                  <div className="bg-red-50 border-2 border-red-300 rounded-lg p-6 mb-6">
+                    <h3 className="text-2xl font-bold text-red-900 mb-2">❌ NO - You DON'T Need Training!</h3>
+                    <p className="text-lg text-gray-800">
+                      <strong>90% of users do NOT need to train any models.</strong> The system is ready to use out of the box!
+                    </p>
+                  </div>
+
+                  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">What's Already Built-In</h3>
+                  
+                  <div className="space-y-4">
+                    <div className="border-l-4 border-green-500 bg-green-50 p-4">
+                      <h4 className="font-semibold text-gray-900 mb-2">✅ AI Question Generation</h4>
+                      <p className="text-sm text-gray-700">
+                        <strong>No training needed!</strong> Just add an API key:
+                      </p>
+                      <ul className="list-disc list-inside text-sm text-gray-700 mt-2 ml-4">
+                        <li><strong>Free option:</strong> Google Gemini API (60 requests/min)</li>
+                        <li><strong>Local option:</strong> Ollama (unlimited, runs on your PC)</li>
+                        <li><strong>Paid option:</strong> OpenAI GPT-3.5/4</li>
+                      </ul>
+                    </div>
+
+                    <div className="border-l-4 border-green-500 bg-green-50 p-4">
+                      <h4 className="font-semibold text-gray-900 mb-2">✅ Essay Auto-Grading</h4>
+                      <p className="text-sm text-gray-700">
+                        <strong>No training needed!</strong> Uses the same LLM APIs above. Just configure the API key.
+                      </p>
+                    </div>
+
+                    <div className="border-l-4 border-green-500 bg-green-50 p-4">
+                      <h4 className="font-semibold text-gray-900 mb-2">✅ Anti-Cheat Detection</h4>
+                      <p className="text-sm text-gray-700">
+                        <strong>No training needed!</strong> Uses pre-trained BlazeFace model from Google. Works immediately.
+                      </p>
+                    </div>
+
+                    <div className="border-l-4 border-green-500 bg-green-50 p-4">
+                      <h4 className="font-semibold text-gray-900 mb-2">✅ CAT Algorithm</h4>
+                      <p className="text-sm text-gray-700">
+                        <strong>No training needed!</strong> Built-in adaptive testing. Just assign difficulty levels (0.0-1.0) to questions.
+                      </p>
+                    </div>
+                  </div>
+
+                  <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">When You MIGHT Want to Train</h3>
+                  
+                  <div className="space-y-4">
+                    <div className="border-l-4 border-yellow-500 bg-yellow-50 p-4">
+                      <h4 className="font-semibold text-gray-900 mb-2">⚠️ Custom Anti-Cheat Model</h4>
+                      <p className="text-sm text-gray-700">
+                        <strong>Train only if:</strong> You need to detect specific cheating behaviors beyond default (e.g., using phone, reading books).
+                        <br />
+                        <strong>Requires:</strong> Python, TensorFlow, 500-1000 training images
+                      </p>
+                    </div>
+
+                    <div className="border-l-4 border-yellow-500 bg-yellow-50 p-4">
+                      <h4 className="font-semibold text-gray-900 mb-2">⚠️ CAT Calibration</h4>
+                      <p className="text-sm text-gray-700">
+                        <strong>Train only if:</strong> You have 100+ students who completed exams and want more precise difficulty levels.
+                        <br />
+                        <strong>Requires:</strong> Python, historical test data
+                      </p>
+                    </div>
+                  </div>
+
+                  <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">Quick Start Without Training</h3>
+                  
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <ol className="list-decimal list-inside space-y-2 text-gray-700">
+                      <li><strong>Install:</strong> Run <code className="bg-gray-200 px-2 py-1 rounded">npm install && npm run dev</code></li>
+                      <li><strong>Login:</strong> Use demo account (instructor@test.com)</li>
+                      <li><strong>Create questions:</strong> Add questions manually or use AI (if you added API key)</li>
+                      <li><strong>Create exam:</strong> Select questions and publish</li>
+                      <li><strong>Students take exam:</strong> That's it! No training needed.</li>
+                    </ol>
+                  </div>
+
+                  <h3 className="text-xl font-semibold text-gray-900 mt-8 mb-3">Adding AI Features (No Training)</h3>
+                  
+                  <div className="bg-gray-900 text-gray-100 rounded-lg p-4 mb-4 overflow-x-auto">
+                    <pre className="text-sm">
+{`# 1. Get free Gemini API key
+Visit: https://makersuite.google.com/app/apikey
+
+# 2. Add to .env file
+VITE_GEMINI_API_KEY=your_key_here
+
+# 3. Install package
+npm install @google/generative-ai
+
+# 4. Restart app
+npm run dev
+
+# 5. Use "Generate Question" button in app - Done!`}
+                    </pre>
+                  </div>
+
+                  <div className="bg-green-50 border-2 border-green-300 rounded-lg p-6 mt-6">
+                    <h3 className="text-xl font-bold text-green-900 mb-2">📚 For Detailed Vietnamese Guide</h3>
+                    <p className="text-gray-800 mb-3">
+                      See comprehensive step-by-step tutorial in Vietnamese:
+                    </p>
+                    <ul className="list-disc list-inside text-gray-700 space-y-1">
+                      <li><code className="bg-white px-2 py-1 rounded">docs/vi/TUTORIAL_TRAINING.vi.md</code> - Complete A-Z guide</li>
+                      <li><code className="bg-white px-2 py-1 rounded">docs/vi/WORKFLOW_GUIDE.vi.md</code> - Visual workflow diagrams</li>
+                      <li><code className="bg-white px-2 py-1 rounded">docs/vi/MODEL_TRAINING.md</code> - Technical details</li>
+                    </ul>
                   </div>
                 </div>
               )}
