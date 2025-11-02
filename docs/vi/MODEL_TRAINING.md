@@ -1,5 +1,59 @@
 # Hướng Dẫn Training và Sử Dụng AI Models
 
+> 🔥 **QUAN TRỌNG**: Nếu bạn là người mới, hãy đọc **[TUTORIAL_TRAINING.vi.md](./TUTORIAL_TRAINING.vi.md)** trước để có hướng dẫn từng bước chi tiết!
+
+## ❓ CÂU HỎI THƯỜNG GẶP (ĐỌC TRƯỚC KHI BẮT ĐẦU)
+
+### 1. Tôi có cần train AI model không?
+**❌ KHÔNG** - Trong hầu hết các trường hợp, bạn **KHÔNG CẦN** train bất kỳ model nào!
+
+Hệ thống đã sẵn sàng sử dụng với:
+- ✅ AI sinh câu hỏi: Dùng API (Gemini miễn phí, OpenAI trả phí, hoặc Ollama local)
+- ✅ AI chấm tự luận: Dùng API (tương tự trên)
+- ✅ AI phát hiện gian lận: BlazeFace đã tích hợp sẵn
+
+**Chỉ cần train khi:**
+- Muốn custom model anti-cheat cho môi trường đặc biệt
+- Đã có >100 học sinh và muốn calibrate độ khó câu hỏi chính xác hơn
+
+### 2. Tôi train ở đâu?
+**Trả lời:** Train ngay trên máy của bạn trong folder project:
+```
+Intelligence-Test/
+├── training/           ← TẠO folder này để train
+│   ├── anticheat/     ← Train anti-cheat model
+│   └── cat/           ← Calibrate CAT algorithm
+```
+
+### 3. Dataset lấy ở đâu?
+**Trả lời:**
+- **AI sinh câu hỏi**: Không cần dataset, chỉ cần API key
+- **Anti-cheat**: Tự thu thập qua webcam (script có sẵn)
+- **CAT calibration**: Export dữ liệu học sinh từ app
+
+### 4. Sau khi train xong, làm thế nào để dùng?
+**Trả lời:**
+1. Model train xong → Convert sang TensorFlow.js (nếu là anti-cheat)
+2. Copy file model vào `public/models/` trong project
+3. App tự động load model từ folder đó
+4. Không cần làm gì thêm!
+
+### 5. Tôi không biết Python/ML, có dùng được app không?
+**✅ CÓ!** Hệ thống hoạt động hoàn toàn bình thường không cần training. Chỉ cần:
+```bash
+npm install
+npm run dev
+```
+
+### 6. Tôi muốn dùng AI để tạo câu hỏi, phải làm gì?
+**Trả lời:** 
+1. Lấy API key miễn phí từ [Google Gemini](https://makersuite.google.com/app/apikey)
+2. Thêm vào file `.env`: `VITE_GEMINI_API_KEY=your_key`
+3. Cài package: `npm install @google/generative-ai`
+4. Xong! Dùng nút "Generate Question" trong app
+
+---
+
 ## Mục Lục
 1. [Tổng Quan](#tổng-quan)
 2. [Model CAT Algorithm](#model-cat-algorithm)
