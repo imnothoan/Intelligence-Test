@@ -8,16 +8,85 @@ export interface User {
   createdAt: Date;
 }
 
+// Enhanced metadata types for better question organization
+export interface GradeLevel {
+  system: 'elementary' | 'middle-school' | 'high-school' | 'university' | 'other';
+  grade: number | null; // 1-12 for K-12, null for university
+  semester?: 1 | 2 | null;
+}
+
+export interface SubjectInfo {
+  main: string; // Toán, Lý, Hóa, Văn, Anh, etc.
+  chapter?: string; // Chương 1, Chương 2, etc.
+  lesson?: string; // Bài 1, Bài 2, etc.
+  topic?: string; // Đạo hàm, Tích phân, etc.
+}
+
+export interface CognitiveLevel {
+  // Based on Bloom's Taxonomy
+  level: 'remember' | 'understand' | 'apply' | 'analyze' | 'evaluate' | 'create';
+  vietnameseLabel: 'Nhận biết' | 'Thông hiểu' | 'Vận dụng' | 'Vận dụng cao';
+}
+
 // Exam types
 export interface Question {
   id: string;
-  type: 'multiple-choice' | 'essay';
+  type: 'multiple-choice' | 'essay' | 'true-false' | 'fill-blank';
   question: string;
   options?: string[];
   correctAnswer?: string | number;
   difficulty: number; // 0-1 scale for CAT algorithm
   topic: string;
   points: number;
+  
+  // NEW: Enhanced metadata for better organization and AI generation
+  gradeLevel?: GradeLevel;
+  subject?: SubjectInfo;
+  cognitiveLevel?: CognitiveLevel;
+  tags?: string[]; // Custom tags for filtering
+  source?: string; // SGK, Đề thi chính thức, AI generated, etc.
+  explanation?: string; // Detailed explanation for the answer
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+// Enhanced exam configuration with detailed options
+export interface ExamSyllabus {
+  chapters: string[]; // ['Chương 1', 'Chương 2']
+  topics: string[]; // ['Đạo hàm', 'Tích phân']
+  focus?: string; // Detailed description of exam scope
+  excludedTopics?: string[]; // Topics to exclude
+}
+
+export interface QuestionDistribution {
+  // Distribution by cognitive level (Bloom's Taxonomy)
+  cognitiveDistribution?: {
+    remember: number; // % of questions at 'remember' level
+    understand: number; // % of questions at 'understand' level
+    apply: number; // % of questions at 'apply' level
+    analyze: number; // % of questions at 'analyze' level
+  };
+  
+  // Distribution by difficulty
+  difficultyDistribution?: {
+    easy: number; // % of easy questions (0.0-0.3)
+    medium: number; // % of medium questions (0.3-0.7)
+    hard: number; // % of hard questions (0.7-1.0)
+  };
+  
+  // Distribution by question type
+  typeDistribution?: {
+    multipleChoice: number;
+    essay: number;
+    trueFalse?: number;
+    fillBlank?: number;
+  };
+}
+
+export interface ExamTargetAudience {
+  gradeLevel: 'elementary' | 'middle-school' | 'high-school' | 'university' | 'other';
+  grades: number[]; // [10, 11, 12] for high school, or specific grade
+  subject: string; // Main subject
 }
 
 export interface Exam {
@@ -33,6 +102,16 @@ export interface Exam {
   isAdaptive: boolean; // CAT enabled
   antiCheatEnabled: boolean;
   createdAt: Date;
+  
+  // NEW: Enhanced metadata for better exam creation
+  targetAudience?: ExamTargetAudience;
+  syllabus?: ExamSyllabus;
+  questionDistribution?: QuestionDistribution;
+  totalPoints?: number;
+  passingScore?: number; // Minimum score to pass (%)
+  allowReview?: boolean; // Allow students to review after submission
+  shuffleQuestions?: boolean;
+  shuffleOptions?: boolean;
 }
 
 // Class types

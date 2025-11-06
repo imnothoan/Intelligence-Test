@@ -67,6 +67,304 @@ export class GeminiService {
   }
 
   /**
+   * Generate questions with enhanced context (NEW - Better for exam creation)
+   * @param options Enhanced generation options with full context
+   */
+  async generateQuestionsWithContext(options: {
+    subject: string;
+    gradeLevel?: string; // 'Lớp 10', 'Lớp 11', 'THPT', 'Đại học'
+    chapter?: string;
+    topics?: string[];
+    count: number;
+    difficulty: number;
+    cognitiveLevel?: string; // 'Nhận biết', 'Thông hiểu', 'Vận dụng', 'Vận dụng cao'
+    type: 'multiple-choice' | 'essay';
+    language?: 'vi' | 'en';
+    additionalContext?: string; // Free-form context
+  }): Promise<Question[]> {
+    if (!this.model) {
+      throw new Error('Gemini API key not configured. Please add VITE_GEMINI_API_KEY to your .env file');
+    }
+
+    try {
+      const prompt = this.buildEnhancedQuestionPrompt(options);
+      const result = await this.model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+      
+      const questions = this.parseGeneratedQuestions(
+        text, 
+        options.subject, 
+        options.difficulty, 
+        options.type
+      );
+
+      // Enhance questions with metadata
+      return questions.map(q => ({
+        ...q,
+        subject: {
+          main: options.subject,
+          chapter: options.chapter,
+          topic: options.topics?.join(', ')
+        },
+        gradeLevel: options.gradeLevel ? {
+          system: this.parseGradeSystem(options.gradeLevel),
+          grade: this.parseGradeNumber(options.gradeLevel),
+          semester: null
+        } : undefined,
+        cognitiveLevel: options.cognitiveLevel ? {
+          level: this.mapCognitiveLevelToBloom(options.cognitiveLevel),
+          vietnameseLabel: options.cognitiveLevel as any
+        } : undefined,
+        source: 'Gemini AI (Enhanced Generation)',
+        createdAt: new Date()
+      }));
+    } catch (error) {
+      console.error('Error generating questions with enhanced context:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Build enhanced prompt with full educational context
+   */
+  private buildEnhancedQuestionPrompt(options: {
+    subject: string;
+    gradeLevel?: string;
+    chapter?: string;
+    topics?: string[];
+    count: number;
+    difficulty: number;
+    cognitiveLevel?: string;
+    type: 'multiple-choice' | 'essay';
+    language?: 'vi' | 'en';
+    additionalContext?: string;
+  }): string {
+    const language = options.language || 'vi';
+    const difficultyLabel = options.difficulty < 0.3 ? 'dễ' : options.difficulty < 0.7 ? 'trung bình' : 'khó';
+
+    if (language === 'vi') {
+      let prompt = `BẠN LÀ: Giáo viên ${options.subject} giàu kinh nghiệm, chuyên gia về thiết kế đề thi.
+
+NHIỆM VỤ: Tạo ${options.count} câu hỏi ${options.type === 'multiple-choice' ? 'trắc nghiệm' : 'tự luận'} chất lượng cao.
+
+THÔNG TIN CHI TIẾT:
+- Môn học: ${options.subject}`;
+
+      if (options.gradeLevel) {
+        prompt += `\n- Khối lớp: ${options.gradeLevel}`;
+      }
+
+      if (options.chapter) {
+        prompt += `\n- Chương: ${options.chapter}`;
+      }
+
+      if (options.topics && options.topics.length > 0) {
+        prompt += `\n- Chủ đề cụ thể: ${options.topics.join(', ')}`;
+      }
+
+      prompt += `\n- Mức độ: ${difficultyLabel} (${options.difficulty.toFixed(1)})`;
+
+      if (options.cognitiveLevel) {
+        prompt += `\n- Mức độ nhận thức: ${options.cognitiveLevel}`;
+      }
+
+      if (options.additionalContext) {
+        prompt += `\n- Yêu cầu thêm: ${options.additionalContext}`;
+      }
+
+      if (options.type === 'multiple-choice') {
+        prompt += `
+
+YÊU CẦU CHẤT LƯỢNG:
+✓ Theo chương trình ${options.subject} ${options.gradeLevel || 'hiện hành'}
+✓ Sát với kiến thức trong SGK và tài liệu tham khảo
+✓ 4 đáp án (A, B, C, D) - chỉ 1 đáp án đúng
+✓ Các đáp án sai phải hợp lý, gây nhầm lẫn (common mistakes)
+✓ Ngôn ngữ rõ ràng, chính xác về mặt khoa học
+✓ Độ khó phù hợp với mức độ ${difficultyLabel}`;
+
+        if (options.cognitiveLevel === 'Nhận biết') {
+          prompt += `
+✓ Kiểm tra khả năng nhớ, nhận biết khái niệm, công thức, định nghĩa`;
+        } else if (options.cognitiveLevel === 'Thông hiểu') {
+          prompt += `
+✓ Kiểm tra khả năng hiểu, giải thích, so sánh, phân loại`;
+        } else if (options.cognitiveLevel === 'Vận dụng') {
+          prompt += `
+✓ Kiểm tra khả năng áp dụng kiến thức vào bài tập, tình huống cụ thể`;
+        } else if (options.cognitiveLevel === 'Vận dụng cao') {
+          prompt += `
+✓ Kiểm tra khả năng phân tích, tổng hợp, giải quyết vấn đề phức tạp`;
+        }
+
+        prompt += `
+
+OUTPUT FORMAT - JSON Array:
+[
+  {
+    "question": "Nội dung câu hỏi (rõ ràng, đầy đủ thông tin)",
+    "options": [
+      "A) Đáp án A (đúng hoặc sai)",
+      "B) Đáp án B", 
+      "C) Đáp án C",
+      "D) Đáp án D"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Giải thích chi tiết: Tại sao đáp án này đúng? Tại sao các đáp án khác sai?"
+  }
+]
+
+CHÚ Ý: Chỉ trả về JSON array, KHÔNG thêm bất kỳ text nào khác.`;
+      } else {
+        // Essay questions
+        prompt += `
+
+YÊU CẦU CHẤT LƯỢNG:
+✓ Câu hỏi mở, yêu cầu phân tích, giải thích, đánh giá
+✓ Theo chương trình ${options.subject} ${options.gradeLevel || 'hiện hành'}
+✓ Liệt kê các ý chính học sinh cần trình bày
+✓ Đề xuất tiêu chí chấm điểm cụ thể
+✓ Gợi ý độ dài bài làm hợp lý
+
+OUTPUT FORMAT - JSON Array:
+[
+  {
+    "question": "Nội dung câu hỏi tự luận (yêu cầu rõ ràng)",
+    "keyPoints": [
+      "Điểm chính 1 cần có trong bài làm",
+      "Điểm chính 2",
+      "Điểm chính 3"
+    ],
+    "rubric": "Tiêu chí chấm điểm chi tiết (Nội dung: X điểm, Cấu trúc: Y điểm, ...)",
+    "suggestedLength": "150-200 từ"
+  }
+]
+
+CHÚ Ý: Chỉ trả về JSON array, KHÔNG thêm bất kỳ text nào khác.`;
+      }
+
+      return prompt;
+    } else {
+      // English version
+      let prompt = `YOU ARE: An experienced ${options.subject} teacher and expert in test design.
+
+TASK: Create ${options.count} high-quality ${options.type === 'multiple-choice' ? 'multiple-choice' : 'essay'} questions.
+
+DETAILED CONTEXT:
+- Subject: ${options.subject}`;
+
+      if (options.gradeLevel) {
+        prompt += `\n- Grade Level: ${options.gradeLevel}`;
+      }
+
+      if (options.chapter) {
+        prompt += `\n- Chapter: ${options.chapter}`;
+      }
+
+      if (options.topics && options.topics.length > 0) {
+        prompt += `\n- Specific Topics: ${options.topics.join(', ')}`;
+      }
+
+      prompt += `\n- Difficulty: ${difficultyLabel} (${options.difficulty.toFixed(1)})`;
+
+      if (options.cognitiveLevel) {
+        prompt += `\n- Cognitive Level: ${options.cognitiveLevel}`;
+      }
+
+      if (options.additionalContext) {
+        prompt += `\n- Additional Requirements: ${options.additionalContext}`;
+      }
+
+      if (options.type === 'multiple-choice') {
+        prompt += `
+
+QUALITY REQUIREMENTS:
+✓ Aligned with ${options.subject} ${options.gradeLevel || 'curriculum'}
+✓ 4 options (A, B, C, D) - only one correct
+✓ Distractors should be plausible (common mistakes)
+✓ Clear, scientifically accurate language
+✓ Appropriate for ${difficultyLabel} difficulty
+
+OUTPUT FORMAT - JSON Array:
+[
+  {
+    "question": "Clear, complete question text",
+    "options": [
+      "A) Option A (correct or incorrect)",
+      "B) Option B",
+      "C) Option C", 
+      "D) Option D"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Detailed explanation: Why is this correct? Why are others wrong?"
+  }
+]
+
+NOTE: Return ONLY the JSON array, no additional text.`;
+      } else {
+        prompt += `
+
+QUALITY REQUIREMENTS:
+✓ Open-ended questions requiring analysis/evaluation
+✓ Aligned with ${options.subject} ${options.gradeLevel || 'curriculum'}
+✓ List key points students should address
+✓ Specific grading criteria
+✓ Suggested answer length
+
+OUTPUT FORMAT - JSON Array:
+[
+  {
+    "question": "Clear essay question with requirements",
+    "keyPoints": [
+      "Key point 1 to address",
+      "Key point 2",
+      "Key point 3"
+    ],
+    "rubric": "Detailed grading criteria (Content: X points, Structure: Y points, ...)",
+    "suggestedLength": "150-200 words"
+  }
+]
+
+NOTE: Return ONLY the JSON array, no additional text.`;
+      }
+
+      return prompt;
+    }
+  }
+
+  /**
+   * Helper methods for metadata mapping
+   */
+  private parseGradeSystem(gradeLevel: string): 'elementary' | 'middle-school' | 'high-school' | 'university' | 'other' {
+    if (gradeLevel.includes('Tiểu học') || gradeLevel.match(/Lớp [1-5]/)) {
+      return 'elementary';
+    } else if (gradeLevel.includes('THCS') || gradeLevel.match(/Lớp [6-9]/)) {
+      return 'middle-school';
+    } else if (gradeLevel.includes('THPT') || gradeLevel.match(/Lớp (10|11|12)/)) {
+      return 'high-school';
+    } else if (gradeLevel.includes('Đại học') || gradeLevel.includes('University')) {
+      return 'university';
+    }
+    return 'other';
+  }
+
+  private parseGradeNumber(gradeLevel: string): number | null {
+    const match = gradeLevel.match(/Lớp (\d+)/);
+    return match ? parseInt(match[1]) : null;
+  }
+
+  private mapCognitiveLevelToBloom(vietnameseLevel: string): 'remember' | 'understand' | 'apply' | 'analyze' | 'evaluate' | 'create' {
+    const mapping: Record<string, 'remember' | 'understand' | 'apply' | 'analyze' | 'evaluate' | 'create'> = {
+      'Nhận biết': 'remember',
+      'Thông hiểu': 'understand',
+      'Vận dụng': 'apply',
+      'Vận dụng cao': 'analyze'
+    };
+    return mapping[vietnameseLevel] || 'understand';
+  }
+
+  /**
    * Grade an essay using Gemini AI
    * @param question The essay question
    * @param studentAnswer The student's answer
