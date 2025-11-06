@@ -23,7 +23,12 @@ export interface SubjectInfo {
 }
 
 export interface CognitiveLevel {
-  // Based on Bloom's Taxonomy
+  // Based on Bloom's Taxonomy - mapped to Vietnamese education system
+  // Note: Vietnamese education system typically uses 4 levels:
+  // - Nhận biết (Remember/Knowledge)
+  // - Thông hiểu (Understand/Comprehension)
+  // - Vận dụng (Apply/Application)
+  // - Vận dụng cao (Analyze/Higher-order thinking - includes Analyze, Evaluate, Create)
   level: 'remember' | 'understand' | 'apply' | 'analyze' | 'evaluate' | 'create';
   vietnameseLabel: 'Nhận biết' | 'Thông hiểu' | 'Vận dụng' | 'Vận dụng cao';
 }

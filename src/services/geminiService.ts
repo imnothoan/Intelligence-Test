@@ -355,11 +355,13 @@ NOTE: Return ONLY the JSON array, no additional text.`;
   }
 
   private mapCognitiveLevelToBloom(vietnameseLevel: string): 'remember' | 'understand' | 'apply' | 'analyze' | 'evaluate' | 'create' {
+    // Map Vietnamese 4-level system to Bloom's 6-level taxonomy
+    // Vietnamese education typically uses 4 levels that map as follows:
     const mapping: Record<string, 'remember' | 'understand' | 'apply' | 'analyze' | 'evaluate' | 'create'> = {
-      'Nhận biết': 'remember',
-      'Thông hiểu': 'understand',
-      'Vận dụng': 'apply',
-      'Vận dụng cao': 'analyze'
+      'Nhận biết': 'remember',       // Knowledge/Remember
+      'Thông hiểu': 'understand',    // Comprehension/Understand
+      'Vận dụng': 'apply',           // Application/Apply
+      'Vận dụng cao': 'analyze'      // Higher-order thinking (includes Analyze, Evaluate, Create)
     };
     return mapping[vietnameseLevel] || 'understand';
   }

@@ -85,6 +85,7 @@ const EnhancedExamWizard: React.FC<EnhancedExamWizardProps> = ({
 
   const handleGenerate = async () => {
     if (!cognitiveDistributionValid() || !difficultyDistributionValid()) {
+      // TODO: Replace with toast notification system for better UX
       alert('Tổng phân bố phải bằng 100%');
       return;
     }
@@ -127,10 +128,12 @@ const EnhancedExamWizard: React.FC<EnhancedExamWizardProps> = ({
       }
 
       onQuestionsGenerated(allQuestions);
+      // TODO: Replace with toast notification for better UX
       alert(`Đã tạo thành công ${allQuestions.length} câu hỏi!`);
       if (onClose) onClose();
     } catch (error) {
       console.error('Error generating questions:', error);
+      // TODO: Replace with proper error notification system
       alert('Có lỗi xảy ra khi tạo câu hỏi. Vui lòng kiểm tra API key và thử lại.');
     } finally {
       setIsGenerating(false);
