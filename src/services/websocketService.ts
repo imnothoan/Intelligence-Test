@@ -7,7 +7,7 @@
  * - Instant notifications
  */
 
-import { ExamAttempt, CheatWarning } from '@/types';
+import { CheatWarning } from '@/types';
 import { apiClient } from './apiClient';
 
 export type WebSocketMessageType =
