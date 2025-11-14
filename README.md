@@ -1,6 +1,15 @@
 # Intelligence Test Platform 🎓
 
-A modern, AI-powered intelligent exam platform built with React, TypeScript, and cutting-edge technologies. This platform implements Computerized Adaptive Testing (CAT) algorithm, features AI-powered question generation with **FREE Google Gemini**, real-time monitoring, and comprehensive analytics with Firebase backend integration.
+A modern, AI-powered intelligent exam platform built with React, TypeScript, and cutting-edge technologies. This platform implements Computerized Adaptive Testing (CAT) algorithm, features AI-powered question generation with **FREE Google Gemini**, real-time monitoring, and comprehensive analytics.
+
+## 🏗️ Architecture
+
+This repository contains the **Client Application** (Frontend). The platform uses a client-server architecture:
+
+- **Client (This Repo)**: React + TypeScript frontend application
+- **Server**: [Intelligence Test Server](https://github.com/imnothoan/Intell-Test_Server) - Node.js/Express backend API
+
+> **New!** The platform has been migrated to a modern client-server architecture for better scalability, security, and maintainability. See [Client-Server Migration Guide](#client-server-architecture) below.
 
 > **🇻🇳 Dành cho người dùng Việt Nam:**  
 > - **[🆓 HƯỚNG DẪN GEMINI MIỄN PHÍ](./docs/vi/GEMINI_SETUP.md)** ⭐ **MỚI!** Sử dụng AI hoàn toàn miễn phí
@@ -24,7 +33,15 @@ A modern, AI-powered intelligent exam platform built with React, TypeScript, and
 - **Priority Fallback**: Automatically uses Gemini → OpenAI → Mock data
 - **Easy Setup**: Just add API key from Google AI Studio
 
-### 🔥 Firebase Backend Integration
+### 🔥 Client-Server Architecture (NEW!)
+- **Scalable Backend API**: RESTful API with JWT authentication
+- **WebSocket Support**: Real-time monitoring and notifications
+- **Database Options**: PostgreSQL or MongoDB
+- **Deployment Ready**: VPS, Heroku, Railway, Render support
+- **API Documentation**: Complete API specification with 30+ endpoints
+- **Offline Fallback**: Works with localStorage when server unavailable
+
+### 🔥 Legacy Firebase Integration (Optional)
 - **Cloud Data Storage**: Persistent storage using Firebase Firestore
 - **Real-time Synchronization**: Live data updates across devices
 - **Async Operations**: All data operations properly handle async/await
@@ -80,13 +97,14 @@ A modern, AI-powered intelligent exam platform built with React, TypeScript, and
 
 ## 🛠️ Technology Stack
 
-- **Frontend Framework**: React 19 with TypeScript
+### Frontend (This Repository)
+- **Framework**: React 19 with TypeScript
 - **Build Tool**: Vite
 - **Routing**: React Router v7
-- **State Management**: Zustand with async Firebase integration
+- **State Management**: Zustand with API client integration
 - **Styling**: Tailwind CSS v4
-- **Backend**: Firebase (Firestore, Authentication)
-  - **Note**: Images stored as base64 in Firestore (no Storage needed)
+- **HTTP Client**: Axios with interceptors
+- **WebSocket**: Native WebSocket with reconnection
 - **AI/ML**: 
   - **Google Gemini API** (FREE - Primary, recommended)
   - OpenAI API (Optional - Fallback for advanced features)
@@ -95,17 +113,37 @@ A modern, AI-powered intelligent exam platform built with React, TypeScript, and
 - **Computer Vision**: react-webcam
 - **Charts**: Recharts for data visualization
 
+### Backend ([Server Repository](https://github.com/imnothoan/Intell-Test_Server))
+- **Framework**: Node.js with Express
+- **Language**: TypeScript
+- **Database**: PostgreSQL 14+ or MongoDB 5+
+- **Authentication**: JWT with refresh tokens
+- **WebSocket**: ws library for real-time features
+- **Security**: bcrypt, helmet, rate limiting
+- **Validation**: Joi or class-validator
+- **Deployment**: PM2, Docker, Nginx
+
 ## 📋 Prerequisites
 
+### For Client Only (Standalone Mode)
 - Node.js 18+ and npm
 - Modern web browser with webcam support (for anti-cheat features)
 - **Google Gemini API key** (FREE, recommended) - [Get it here](https://makersuite.google.com/app/apikey)
-- Firebase account (free tier supported, optional for dev mode)
 - OpenAI API key (optional, only for fallback)
 
-## 🚀 Quick Start (3 Steps!)
+### For Client-Server Architecture (Recommended for Production)
+- All client prerequisites above
+- **Intelligence Test Server** running ([Setup Guide](https://github.com/imnothoan/Intell-Test_Server))
+- PostgreSQL 14+ or MongoDB 5+ database
+- Server URL (e.g., http://localhost:3000 for development)
 
-### Step 1: Clone and Install
+## 🚀 Quick Start
+
+### Option A: Standalone Mode (No Server Required)
+
+Perfect for testing and development without setting up a backend server.
+
+#### Step 1: Clone and Install
 
 ```bash
 git clone https://github.com/imnothoan/Intelligence-Test.git
@@ -113,53 +151,158 @@ cd Intelligence-Test
 npm install
 ```
 
-### Step 2: Configure FREE Gemini AI
+#### Step 2: Configure Environment
 
 ```bash
-# Copy environment template
 cp .env.example .env
-
-# Edit .env and add your FREE Gemini API key
-# Get it from: https://makersuite.google.com/app/apikey
 ```
 
-**Minimal `.env` configuration (FREE - No Firebase needed for testing):**
+Edit `.env`:
 ```env
 # Google Gemini API (REQUIRED - FREE)
 VITE_GEMINI_API_KEY=AIza...your-key-here
 
-# Development mode (uses localStorage)
+# Standalone mode (uses localStorage)
 VITE_DEV_MODE=true
 ```
 
-**Full `.env` configuration (with Firebase for production):**
-```env
-# Google Gemini API (RECOMMENDED - FREE)
-VITE_GEMINI_API_KEY=AIza...your-gemini-key
-
-# Firebase Configuration (optional for dev)
-VITE_FIREBASE_API_KEY=your_firebase_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-
-# OpenAI (optional - only if you want to use OpenAI instead of Gemini)
-VITE_OPENAI_API_KEY=sk-...your-openai-key
-
-# Development mode (uses localStorage instead of Firebase)
-VITE_DEV_MODE=false
-```
-
-### Step 3: Run the Application
+#### Step 3: Run
 
 ```bash
 npm run dev
 ```
 
-Open your browser and navigate to: **http://localhost:5173**
+Open **http://localhost:5173**
 
-🎉 **That's it!** You're ready to go!
+---
+
+### Option B: Client-Server Mode (Recommended for Production)
+
+Full production setup with backend server, database, and real-time features.
+
+#### Step 1: Setup Backend Server
+
+First, setup the Intelligence Test Server:
+
+```bash
+# Clone server repository
+git clone https://github.com/imnothoan/Intell-Test_Server.git
+cd Intell-Test_Server
+
+# Follow server setup instructions
+# See: https://github.com/imnothoan/Intell-Test_Server#readme
+```
+
+Or see detailed guide: [docs/api/SERVER_SETUP_GUIDE.md](./docs/api/SERVER_SETUP_GUIDE.md)
+
+#### Step 2: Setup Client
+
+```bash
+git clone https://github.com/imnothoan/Intelligence-Test.git
+cd Intelligence-Test
+npm install
+cp .env.example .env
+```
+
+Edit `.env`:
+```env
+# Backend Server API URL
+VITE_API_BASE_URL=http://localhost:3000/api
+
+# Google Gemini API
+VITE_GEMINI_API_KEY=AIza...your-key-here
+
+# Client-Server mode
+VITE_DEV_MODE=false
+```
+
+#### Step 3: Run Both
+
+```bash
+# Terminal 1: Start server (in Intell-Test_Server directory)
+cd Intell-Test_Server
+npm run dev
+
+# Terminal 2: Start client (in Intelligence-Test directory)
+cd Intelligence-Test
+npm run dev
+```
+
+Access at **http://localhost:5173**
+
+---
+
+## 🏗️ Client-Server Architecture
+
+### Why Client-Server?
+
+The platform has been upgraded to a modern client-server architecture for:
+
+✅ **Better Security**: JWT authentication, server-side validation  
+✅ **Scalability**: Handle thousands of concurrent users  
+✅ **Real-time Features**: WebSocket for live monitoring  
+✅ **Data Persistence**: Professional database (PostgreSQL/MongoDB)  
+✅ **API-First**: Easy integration with mobile apps, third-party systems  
+✅ **Deployment Flexibility**: Deploy client and server separately  
+
+### Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     Client (React App)                       │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   UI Pages   │  │  API Client  │  │  WebSocket   │      │
+│  │              │  │              │  │   Service    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└──────────────────────┬──────────────────────┬───────────────┘
+                       │                      │
+                       │ HTTP/HTTPS           │ WebSocket
+                       │ REST API             │ (Real-time)
+                       │                      │
+┌──────────────────────┴──────────────────────┴───────────────┐
+│                    Server (Node.js/Express)                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │     API      │  │   Business   │  │   WebSocket  │      │
+│  │  Controllers │  │    Logic     │  │   Handlers   │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│                           │                                  │
+│                           │                                  │
+│  ┌────────────────────────┴──────────────────────────┐      │
+│  │           Database (PostgreSQL/MongoDB)           │      │
+│  │  Users | Exams | Classes | Questions | Attempts  │      │
+│  └───────────────────────────────────────────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Key Features
+
+#### API Client (`src/services/apiClient.ts`)
+- Centralized HTTP client with Axios
+- Automatic JWT token management
+- Token refresh on 401 errors
+- Request/response interceptors
+- Type-safe API calls
+
+#### WebSocket Service (`src/services/websocketService.ts`)
+- Real-time exam monitoring
+- Live anti-cheat warnings
+- Automatic reconnection
+- Event-based subscriptions
+- Heartbeat mechanism
+
+#### API Store (`src/store/apiStore.ts`)
+- Zustand state management
+- API integration
+- Optimistic updates
+- Error handling
+- Loading states
+
+### Documentation
+
+- **[API Specification](./docs/api/API_SPECIFICATION.md)** - Complete API reference (30+ endpoints)
+- **[Server Setup Guide](./docs/api/SERVER_SETUP_GUIDE.md)** - Backend installation & deployment
+- **[Client Integration Guide](./docs/api/CLIENT_INTEGRATION_GUIDE.md)** - How to use the API client
+- **[Database Schema](./docs/api/DATABASE_SCHEMA.md)** - Database design & migrations
 
 ---
 
