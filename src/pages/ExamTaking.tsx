@@ -12,7 +12,7 @@ const ExamTaking: React.FC = () => {
   const webcamRef = useRef<Webcam>(null);
   const monitoringIntervalRef = useRef<number | null>(null);
   
-  const { currentUser, exams, startExamAttempt, updateExamAttempt, completeExamAttempt } = useStore();
+  const { currentUser, exams, startExamAttempt, updateExamAttempt, submitExamAttempt } = useStore();
   
   const exam = exams.find(e => e.id === examId);
   const [attempt, setAttempt] = useState<any>(null);
@@ -38,7 +38,7 @@ const ExamTaking: React.FC = () => {
   // Initialize exam attempt
   useEffect(() => {
     if (exam && currentUser && !attempt) {
-      startExamAttempt(exam.id, currentUser.id)
+      startExamAttempt(exam.id)
         .then(newAttempt => {
           setAttempt(newAttempt);
         })
@@ -256,27 +256,20 @@ const ExamTaking: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [toggleBookmark]);
 
-  const handleSubmitExam = () => {
+  const handleSubmitExam = async () => {
     if (!attempt) return;
 
     stopMonitoring();
     exitFullscreen();
 
-    let score = 0;
-    if (exam?.isAdaptive && catAlgorithm) {
-      score = catAlgorithm.getFinalScore();
-    } else if (exam) {
-      const correctAnswers = exam.questions.filter(q => 
-        q.type === 'multiple-choice' && 
-        attempt.answers[q.id] === String(q.correctAnswer)
-      ).length;
-      score = Math.round((correctAnswers / exam.questions.length) * 100);
+    try {
+      // Submit exam attempt with answers to server
+      await submitExamAttempt(attempt.id, attempt.answers);
+      navigate('/student');
+    } catch (error) {
+      console.error('Error submitting exam:', error);
+      alert('Không thể nộp bài. Vui lòng thử lại.');
     }
-
-    updateExamAttempt(attempt.id, { score });
-    completeExamAttempt(attempt.id);
-    
-    navigate('/student');
   };
 
   if (!exam || !attempt) {

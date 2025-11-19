@@ -1,37 +1,37 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
-import { Class } from '@/types';
 
 const InstructorDashboard: React.FC = () => {
   const navigate = useNavigate();
-  const { currentUser, logout, classes, exams, examAttempts, addClass } = useStore();
+  const { currentUser, logout, classes, exams, examAttempts, createClass } = useStore();
   const [showCreateClass, setShowCreateClass] = useState(false);
   const [className, setClassName] = useState('');
   const [classDescription, setClassDescription] = useState('');
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate('/login');
   };
 
-  const handleCreateClass = () => {
+  const handleCreateClass = async () => {
     if (!currentUser || !className) return;
 
-    const newClass: Class = {
-      id: `class-${Date.now()}`,
-      name: className,
-      description: classDescription,
-      instructorId: currentUser.id,
-      students: [],
-      exams: [],
-      createdAt: new Date(),
-    };
-
-    addClass(newClass);
-    setShowCreateClass(false);
-    setClassName('');
-    setClassDescription('');
+    try {
+      await createClass({
+        name: className,
+        description: classDescription,
+        instructorId: currentUser.id,
+        students: [],
+        exams: [],
+      });
+      setShowCreateClass(false);
+      setClassName('');
+      setClassDescription('');
+    } catch (error) {
+      console.error('Error creating class:', error);
+      alert('Không thể tạo lớp học. Vui lòng thử lại.');
+    }
   };
 
   const instructorExams = exams.filter(exam => exam.instructorId === currentUser?.id);

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
-import { Exam, Question } from '@/types';
+import { Question } from '@/types';
 import { aiQuestionGenerator } from '@/services/aiQuestionGenerator';
 
 const ExamCreator: React.FC = () => {
   const navigate = useNavigate();
-  const { currentUser, addExam, classes } = useStore();
+  const { currentUser, createExam, classes } = useStore();
   
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -74,29 +74,30 @@ const ExamCreator: React.FC = () => {
     setQuestions(questions.filter((_, i) => i !== index));
   };
 
-  const handleCreateExam = () => {
+  const handleCreateExam = async () => {
     if (!title || !classId || questions.length === 0) {
       alert('Please fill in all required fields and add at least one question');
       return;
     }
 
-    const exam: Exam = {
-      id: `exam-${Date.now()}`,
-      title,
-      description,
-      instructorId: currentUser?.id || '',
-      classId,
-      questions,
-      duration,
-      startTime: new Date(),
-      endTime: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week from now
-      isAdaptive,
-      antiCheatEnabled,
-      createdAt: new Date(),
-    };
-
-    addExam(exam);
-    navigate('/instructor');
+    try {
+      await createExam({
+        title,
+        description,
+        instructorId: currentUser?.id || '',
+        classId,
+        questions,
+        duration,
+        startTime: new Date(),
+        endTime: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week from now
+        isAdaptive,
+        antiCheatEnabled,
+      });
+      navigate('/instructor');
+    } catch (error) {
+      console.error('Error creating exam:', error);
+      alert('Không thể tạo đề thi. Vui lòng thử lại.');
+    }
   };
 
   return (
