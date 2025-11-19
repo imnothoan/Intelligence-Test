@@ -1,20 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
-import { firebaseService } from '@/services/firebaseService';
+import { websocketService, MonitoringUpdate, CheatWarningUpdate } from '@/services/websocketService';
 import { ExamAttempt, Exam } from '@/types';
 
 /**
- * Real-time Monitoring Dashboard
+ * Real-time Monitoring Dashboard with WebSocket Integration
  * Allows instructors to monitor exam sessions in real-time
  */
 
 export default function MonitoringDashboard() {
   const navigate = useNavigate();
-  const { currentUser, exams } = useStore();
+  const { currentUser, exams, loadAttemptsByExam } = useStore();
   const [selectedExam, setSelectedExam] = useState<Exam | null>(null);
   const [liveAttempts, setLiveAttempts] = useState<ExamAttempt[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     if (!currentUser || currentUser.role !== 'instructor') {
@@ -22,21 +23,84 @@ export default function MonitoringDashboard() {
     }
   }, [currentUser, navigate]);
 
+  // Handle monitoring updates via WebSocket
+  const handleMonitoringUpdate = useCallback((update: MonitoringUpdate) => {
+    setLiveAttempts(prev => {
+      const existing = prev.find(a => a.id === update.attemptId);
+      if (existing) {
+        return prev.map(a => 
+          a.id === update.attemptId 
+            ? { ...a, currentQuestion: update.currentQuestion, progress: update.progress }
+            : a
+        );
+      }
+      return prev;
+    });
+  }, []);
+
+  // Handle cheat warnings via WebSocket
+  const handleCheatWarning = useCallback((warning: CheatWarningUpdate) => {
+    // Update the attempt with the new warning
+    setLiveAttempts(prev => {
+      return prev.map(a => {
+        if (a.id === warning.attemptId) {
+          return {
+            ...a,
+            warnings: [...(a.warnings || []), warning.warning]
+          };
+        }
+        return a;
+      });
+    });
+  }, []);
+
+  // Connect/disconnect WebSocket when exam is selected
   useEffect(() => {
-    if (!selectedExam) return;
+    if (!selectedExam) {
+      websocketService.disconnect();
+      setIsConnected(false);
+      return;
+    }
 
     setLoading(true);
-    const unsubscribe = firebaseService.subscribeToExamAttempts(
-      selectedExam.id,
-      (attempts) => {
-        setLiveAttempts(attempts.filter(a => a.status === 'in-progress'));
-        setLoading(false);
-      }
-    );
+    
+    // Load initial attempts from API
+    loadAttemptsByExam(selectedExam.id).then(() => {
+      setLoading(false);
+    });
+
+    // Connect WebSocket for real-time updates
+    websocketService.connect(selectedExam.id);
+    
+    // Subscribe to events
+    websocketService.on('connected', () => {
+      setIsConnected(true);
+      console.log('WebSocket connected to exam monitoring');
+    });
+    
+    websocketService.on('disconnected', () => {
+      setIsConnected(false);
+      console.log('WebSocket disconnected');
+    });
+    
+    websocketService.subscribeToExamMonitoring(selectedExam.id, handleMonitoringUpdate);
+    websocketService.subscribeToCheatWarnings(selectedExam.id, handleCheatWarning);
 
     return () => {
-      if (unsubscribe) unsubscribe();
+      websocketService.disconnect();
+      setIsConnected(false);
     };
+  }, [selectedExam, loadAttemptsByExam, handleMonitoringUpdate, handleCheatWarning]);
+
+  // Sync attempts from store
+  useEffect(() => {
+    if (selectedExam) {
+      const { examAttempts } = useStore.getState();
+      const filteredAttempts = examAttempts.filter(
+        a => a.examId === selectedExam.id && a.status === 'in-progress'
+      );
+      setLiveAttempts(filteredAttempts);
+    }
   }, [selectedExam]);
 
   const getWarningBadge = (warningCount: number) => {
@@ -52,11 +116,19 @@ export default function MonitoringDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
                 📊 Real-time Monitoring Dashboard
+                {selectedExam && (
+                  <span className="flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></span>
+                    <span className="text-sm font-normal text-gray-500">
+                      {isConnected ? 'Connected' : 'Disconnected'}
+                    </span>
+                  </span>
+                )}
               </h1>
               <p className="text-sm text-gray-600 mt-1">
-                Monitor exam sessions and student activity in real-time
+                Monitor exam sessions and student activity in real-time via WebSocket
               </p>
             </div>
             <button
