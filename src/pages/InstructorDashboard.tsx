@@ -49,35 +49,35 @@ const InstructorDashboard: React.FC = () => {
   ).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-indigo-50">
-      {/* Modern Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-6">
+    <div className="min-h-screen bg-academic-50">
+      {/* Academic Header */}
+      <header className="bg-white border-b border-academic-200">
+        <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
-              <div className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg">
-                <span className="text-3xl">👨‍🏫</span>
+              <div className="bg-academic-900 text-white w-12 h-12 rounded-lg flex items-center justify-center">
+                <span className="text-2xl">👨‍🏫</span>
               </div>
               <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                <h1 className="text-2xl font-bold text-academic-900">
                   Bảng Điều Khiển Giảng Viên
                 </h1>
-                <p className="text-gray-500 text-sm mt-1">Xin chào, {currentUser?.name}!</p>
+                <p className="text-academic-600 text-sm mt-0.5">Xin chào, {currentUser?.name}</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <button
                 onClick={() => navigate('/guide')}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-xl transition flex items-center gap-2"
+                className="academic-button-secondary flex items-center gap-2"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 Trợ Giúp
               </button>
               <button
                 onClick={handleLogout}
-                className="px-6 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 font-semibold shadow-lg transition transform hover:scale-105"
+                className="px-5 py-2 bg-academic-900 text-white rounded-lg hover:bg-academic-800 font-medium transition"
               >
                 Đăng Xuất
               </button>
@@ -88,142 +88,108 @@ const InstructorDashboard: React.FC = () => {
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
           {/* Total Classes */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden transform transition hover:scale-105">
-            <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-4">
-              <div className="flex items-center justify-between">
-                <div className="text-white text-3xl">🏫</div>
-                <div className="text-right">
-                  <p className="text-purple-100 text-sm font-medium">Lớp Học</p>
-                  <p className="text-white text-3xl font-bold">{instructorClasses.length}</p>
-                </div>
-              </div>
+          <div className="academic-card p-5">
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-2xl">🏫</div>
+              <div className="text-academic-400 text-sm">Lớp Học</div>
             </div>
-            <div className="p-4 bg-purple-50">
-              <p className="text-purple-900 text-sm">{totalStudents} sinh viên</p>
+            <div className="space-y-1">
+              <p className="text-3xl font-bold text-academic-900">{instructorClasses.length}</p>
+              <p className="text-academic-600 text-sm">{totalStudents} sinh viên</p>
             </div>
           </div>
 
           {/* Total Exams */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden transform transition hover:scale-105">
-            <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4">
-              <div className="flex items-center justify-between">
-                <div className="text-white text-3xl">📝</div>
-                <div className="text-right">
-                  <p className="text-blue-100 text-sm font-medium">Đề Thi</p>
-                  <p className="text-white text-3xl font-bold">{totalExams}</p>
-                </div>
-              </div>
+          <div className="academic-card p-5">
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-2xl">📝</div>
+              <div className="text-academic-400 text-sm">Đề Thi</div>
             </div>
-            <div className="p-4 bg-blue-50">
-              <p className="text-blue-900 text-sm">Đã tạo</p>
+            <div className="space-y-1">
+              <p className="text-3xl font-bold text-academic-900">{totalExams}</p>
+              <p className="text-academic-600 text-sm">Đã tạo</p>
             </div>
           </div>
 
           {/* Total Attempts */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden transform transition hover:scale-105">
-            <div className="bg-gradient-to-r from-green-500 to-green-600 p-4">
-              <div className="flex items-center justify-between">
-                <div className="text-white text-3xl">📊</div>
-                <div className="text-right">
-                  <p className="text-green-100 text-sm font-medium">Lượt Thi</p>
-                  <p className="text-white text-3xl font-bold">{totalAttempts}</p>
-                </div>
-              </div>
+          <div className="academic-card p-5">
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-2xl">📊</div>
+              <div className="text-academic-400 text-sm">Lượt Thi</div>
             </div>
-            <div className="p-4 bg-green-50">
-              <p className="text-green-900 text-sm">Tổng số</p>
+            <div className="space-y-1">
+              <p className="text-3xl font-bold text-academic-900">{totalAttempts}</p>
+              <p className="text-academic-600 text-sm">Tổng số</p>
             </div>
           </div>
 
           {/* Active Now */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden transform transition hover:scale-105">
-            <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-4">
-              <div className="flex items-center justify-between">
-                <div className="text-white text-3xl">🔴</div>
-                <div className="text-right">
-                  <p className="text-orange-100 text-sm font-medium">Đang Thi</p>
-                  <p className="text-white text-3xl font-bold">{activeExams}</p>
-                </div>
-              </div>
+          <div className="academic-card p-5">
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-2xl">🔴</div>
+              <div className="text-academic-400 text-sm">Đang Thi</div>
             </div>
-            <div className="p-4 bg-orange-50">
-              <p className="text-orange-900 text-sm">Trực tiếp</p>
+            <div className="space-y-1">
+              <p className="text-3xl font-bold text-academic-900">{activeExams}</p>
+              <p className="text-academic-600 text-sm">Đang hoạt động</p>
             </div>
           </div>
         </div>
 
         {/* Quick Actions */}
         <section className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-              <span className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white w-10 h-10 rounded-xl flex items-center justify-center">
-                ⚡
-              </span>
+          <div className="mb-5">
+            <h2 className="text-xl font-bold text-academic-900 flex items-center gap-2">
+              <span>⚡</span>
               Hành Động Nhanh
             </h2>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             <button
               onClick={() => navigate('/instructor/exam/create')}
-              className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden transform transition hover:scale-105 hover:shadow-2xl hover:border-blue-500"
+              className="academic-card-hover p-5 text-left"
             >
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white">
-                <div className="text-5xl mb-3">📝</div>
-                <h3 className="text-xl font-bold">Tạo Đề Thi</h3>
-              </div>
-              <div className="p-5">
-                <p className="text-gray-600 text-sm">
-                  Tạo bài kiểm tra mới với AI hoặc thủ công
-                </p>
-              </div>
+              <div className="text-3xl mb-3">📝</div>
+              <h3 className="text-base font-semibold text-academic-900 mb-2">Tạo Đề Thi</h3>
+              <p className="text-academic-600 text-sm">
+                Tạo bài kiểm tra mới với AI hoặc thủ công
+              </p>
             </button>
 
             <button
               onClick={() => navigate('/instructor/question-bank')}
-              className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden transform transition hover:scale-105 hover:shadow-2xl hover:border-purple-500"
+              className="academic-card-hover p-5 text-left"
             >
-              <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-6 text-white">
-                <div className="text-5xl mb-3">🏦</div>
-                <h3 className="text-xl font-bold">Ngân Hàng Câu Hỏi</h3>
-              </div>
-              <div className="p-5">
-                <p className="text-gray-600 text-sm">
-                  Quản lý và tổ chức kho câu hỏi của bạn
-                </p>
-              </div>
+              <div className="text-3xl mb-3">🏦</div>
+              <h3 className="text-base font-semibold text-academic-900 mb-2">Ngân Hàng Câu Hỏi</h3>
+              <p className="text-academic-600 text-sm">
+                Quản lý và tổ chức kho câu hỏi của bạn
+              </p>
             </button>
 
             <button
               onClick={() => navigate('/instructor/monitoring')}
-              className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden transform transition hover:scale-105 hover:shadow-2xl hover:border-red-500"
+              className="academic-card-hover p-5 text-left"
             >
-              <div className="bg-gradient-to-r from-red-500 to-red-600 p-6 text-white">
-                <div className="text-5xl mb-3">📹</div>
-                <h3 className="text-xl font-bold">Giám Sát</h3>
-              </div>
-              <div className="p-5">
-                <p className="text-gray-600 text-sm">
-                  Theo dõi bài thi trực tiếp và phát hiện gian lận
-                </p>
-              </div>
+              <div className="text-3xl mb-3">📹</div>
+              <h3 className="text-base font-semibold text-academic-900 mb-2">Giám Sát</h3>
+              <p className="text-academic-600 text-sm">
+                Theo dõi bài thi trực tiếp và phát hiện gian lận
+              </p>
             </button>
 
             <button
               onClick={() => navigate('/instructor/analytics')}
-              className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden transform transition hover:scale-105 hover:shadow-2xl hover:border-green-500"
+              className="academic-card-hover p-5 text-left"
             >
-              <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 text-white">
-                <div className="text-5xl mb-3">📊</div>
-                <h3 className="text-xl font-bold">Phân Tích</h3>
-              </div>
-              <div className="p-5">
-                <p className="text-gray-600 text-sm">
-                  Xem báo cáo và thống kê chi tiết
-                </p>
-              </div>
+              <div className="text-3xl mb-3">📊</div>
+              <h3 className="text-base font-semibold text-academic-900 mb-2">Phân Tích</h3>
+              <p className="text-academic-600 text-sm">
+                Xem báo cáo và thống kê chi tiết
+              </p>
             </button>
           </div>
         </section>
