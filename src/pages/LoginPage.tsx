@@ -12,8 +12,7 @@ const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const login = useStore((state) => state.login);
-  const { addUser } = useStore();
+  const { login, register } = useStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,20 +33,10 @@ const LoginPage: React.FC = () => {
           return;
         }
 
-        // Create new user
-        const newUser = {
-          id: `user-${Date.now()}`,
-          email,
-          name,
-          role,
-          createdAt: new Date(),
-        };
-
-        addUser(newUser);
-        alert('Tạo tài khoản thành công! Vui lòng đăng nhập.');
-        setIsSignUp(false);
-        setPassword('');
-        setConfirmPassword('');
+        // Register new user via API
+        await register(email, password, name, role);
+        alert('Tạo tài khoản thành công!');
+        navigate(role === 'instructor' ? '/instructor' : '/student');
       } else {
         // Handle login
         await login(email, password, role);
