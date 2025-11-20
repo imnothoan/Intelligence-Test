@@ -4,6 +4,7 @@ import { useStore } from '@/store';
 import { firebaseService } from '@/services/firebaseService';
 import { aiQuestionGenerator } from '@/services/aiQuestionGenerator';
 import { Question } from '@/types';
+import { LibraryIcon, RobotIcon } from '@/components/icons/AcademicIcons';
 
 /**
  * Question Bank Management
@@ -175,8 +176,9 @@ export default function QuestionBank() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                📚 Question Bank
+              <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                <LibraryIcon className="text-academic-700" size={28} />
+                Question Bank
               </h1>
               <p className="text-sm text-gray-600 mt-1">
                 Manage and organize your exam questions
@@ -229,7 +231,8 @@ export default function QuestionBank() {
               disabled={loading}
               className="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-lg hover:bg-purple-700 disabled:opacity-50"
             >
-              🤖 Generate with AI
+              <RobotIcon className="inline-block mr-1" size={16} />
+              Generate with AI
             </button>
             <button
               onClick={() => setShowAddModal(true)}

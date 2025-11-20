@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
 import { websocketService, MonitoringUpdate, CheatWarningUpdate } from '@/services/websocketService';
 import { ExamAttempt, Exam } from '@/types';
+import { ActivityIcon } from '@/components/icons/AcademicIcons';
 
 /**
  * Real-time Monitoring Dashboard with WebSocket Integration
@@ -117,7 +118,8 @@ export default function MonitoringDashboard() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                📊 Real-time Monitoring Dashboard
+                <ActivityIcon className="text-academic-700" size={28} />
+                Real-time Monitoring Dashboard
                 {selectedExam && (
                   <span className="flex items-center gap-2">
                     <span className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></span>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
+import { LightbulbIcon } from '@/components/icons/AcademicIcons';
 
 const ClassManagement: React.FC = () => {
   const { classId } = useParams<{ classId: string }>();
@@ -137,8 +138,9 @@ const ClassManagement: React.FC = () => {
             </div>
 
             <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
-              <h3 className="text-lg font-semibold text-blue-800 mb-2">
-                💡 Quick Actions
+              <h3 className="text-lg font-semibold text-blue-800 mb-2 flex items-center gap-2">
+                <LightbulbIcon className="text-blue-600" size={20} />
+                Quick Actions
               </h3>
               <div className="space-y-2">
                 <button

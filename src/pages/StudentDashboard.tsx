@@ -1,6 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
+import { 
+  GraduationCapIcon, BookOpenIcon, FileTextIcon, CheckCircleIcon, 
+  AwardIcon, ClockIcon 
+} from '@/components/icons/AcademicIcons';
 
 const StudentDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -43,7 +47,7 @@ const StudentDashboard: React.FC = () => {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
               <div className="bg-academic-900 text-white w-12 h-12 rounded-lg flex items-center justify-center">
-                <span className="text-2xl">🎓</span>
+                <GraduationCapIcon className="text-white" size={24} />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-academic-900">
@@ -79,7 +83,9 @@ const StudentDashboard: React.FC = () => {
           {/* Total Classes */}
           <div className="academic-card p-5">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-2xl">📚</div>
+              <div className="p-2 bg-academic-100 rounded-lg">
+                <BookOpenIcon className="text-academic-700" size={20} />
+              </div>
               <div className="text-academic-400 text-sm">Lớp Học</div>
             </div>
             <div className="space-y-1">
@@ -91,7 +97,9 @@ const StudentDashboard: React.FC = () => {
           {/* Available Exams */}
           <div className="academic-card p-5">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-2xl">📝</div>
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <ClockIcon className="text-blue-600" size={20} />
+              </div>
               <div className="text-academic-400 text-sm">Bài Thi</div>
             </div>
             <div className="space-y-1">
@@ -103,7 +111,9 @@ const StudentDashboard: React.FC = () => {
           {/* Completed */}
           <div className="academic-card p-5">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-2xl">✓</div>
+              <div className="p-2 bg-green-100 rounded-lg">
+                <CheckCircleIcon className="text-green-600" size={20} />
+              </div>
               <div className="text-academic-400 text-sm">Hoàn Thành</div>
             </div>
             <div className="space-y-1">
@@ -115,7 +125,9 @@ const StudentDashboard: React.FC = () => {
           {/* Average Score */}
           <div className="academic-card p-5">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-2xl">⭐</div>
+              <div className="p-2 bg-amber-100 rounded-lg">
+                <AwardIcon className="text-amber-600" size={20} />
+              </div>
               <div className="text-academic-400 text-sm">Điểm TB</div>
             </div>
             <div className="space-y-1">
@@ -129,8 +141,8 @@ const StudentDashboard: React.FC = () => {
         <section className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-              <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-white w-10 h-10 rounded-xl flex items-center justify-center">
-                📝
+              <span className="bg-academic-900 text-white w-10 h-10 rounded-lg flex items-center justify-center">
+                <FileTextIcon className="text-white" size={20} />
               </span>
               Bài Thi Khả Dụng
             </h2>
@@ -143,7 +155,11 @@ const StudentDashboard: React.FC = () => {
           
           {upcomingExams.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-lg border-2 border-dashed border-gray-300 p-12 text-center">
-              <div className="text-6xl mb-4">🎉</div>
+              <div className="flex justify-center mb-4">
+                <div className="p-4 bg-green-100 rounded-full">
+                  <CheckCircleIcon className="text-green-600" size={48} />
+                </div>
+              </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Tuyệt vời!</h3>
               <p className="text-gray-600">
                 Bạn đã hoàn thành tất cả bài thi. Hãy thư giãn hoặc ôn tập lại kiến thức!
