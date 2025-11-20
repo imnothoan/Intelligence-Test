@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
+import { 
+  UserTeacherIcon, BuildingIcon, FileTextIcon, ChartBarIcon, ActivityIcon, 
+  ZapIcon, PlusCircleIcon, EyeIcon, LibraryIcon 
+} from '@/components/icons/AcademicIcons';
 
 const InstructorDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -56,7 +60,7 @@ const InstructorDashboard: React.FC = () => {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
               <div className="bg-academic-900 text-white w-12 h-12 rounded-lg flex items-center justify-center">
-                <span className="text-2xl">👨‍🏫</span>
+                <UserTeacherIcon className="text-white" size={24} />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-academic-900">
@@ -92,7 +96,9 @@ const InstructorDashboard: React.FC = () => {
           {/* Total Classes */}
           <div className="academic-card p-5">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-2xl">🏫</div>
+              <div className="p-2 bg-academic-100 rounded-lg">
+                <BuildingIcon className="text-academic-700" size={20} />
+              </div>
               <div className="text-academic-400 text-sm">Lớp Học</div>
             </div>
             <div className="space-y-1">
@@ -104,7 +110,9 @@ const InstructorDashboard: React.FC = () => {
           {/* Total Exams */}
           <div className="academic-card p-5">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-2xl">📝</div>
+              <div className="p-2 bg-academic-100 rounded-lg">
+                <FileTextIcon className="text-academic-700" size={20} />
+              </div>
               <div className="text-academic-400 text-sm">Đề Thi</div>
             </div>
             <div className="space-y-1">
@@ -116,7 +124,9 @@ const InstructorDashboard: React.FC = () => {
           {/* Total Attempts */}
           <div className="academic-card p-5">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-2xl">📊</div>
+              <div className="p-2 bg-academic-100 rounded-lg">
+                <ChartBarIcon className="text-academic-700" size={20} />
+              </div>
               <div className="text-academic-400 text-sm">Lượt Thi</div>
             </div>
             <div className="space-y-1">
@@ -128,7 +138,9 @@ const InstructorDashboard: React.FC = () => {
           {/* Active Now */}
           <div className="academic-card p-5">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-2xl">🔴</div>
+              <div className="p-2 bg-red-100 rounded-lg">
+                <ActivityIcon className="text-red-600" size={20} />
+              </div>
               <div className="text-academic-400 text-sm">Đang Thi</div>
             </div>
             <div className="space-y-1">
@@ -142,7 +154,7 @@ const InstructorDashboard: React.FC = () => {
         <section className="mb-8">
           <div className="mb-5">
             <h2 className="text-xl font-bold text-academic-900 flex items-center gap-2">
-              <span>⚡</span>
+              <ZapIcon className="text-academic-700" size={20} />
               Hành Động Nhanh
             </h2>
           </div>
@@ -152,7 +164,9 @@ const InstructorDashboard: React.FC = () => {
               onClick={() => navigate('/instructor/exam/create')}
               className="academic-card-hover p-5 text-left"
             >
-              <div className="text-3xl mb-3">📝</div>
+              <div className="p-3 bg-academic-100 rounded-lg inline-flex mb-3">
+                <PlusCircleIcon className="text-academic-700" size={24} />
+              </div>
               <h3 className="text-base font-semibold text-academic-900 mb-2">Tạo Đề Thi</h3>
               <p className="text-academic-600 text-sm">
                 Tạo bài kiểm tra mới với AI hoặc thủ công
@@ -163,7 +177,9 @@ const InstructorDashboard: React.FC = () => {
               onClick={() => navigate('/instructor/question-bank')}
               className="academic-card-hover p-5 text-left"
             >
-              <div className="text-3xl mb-3">🏦</div>
+              <div className="p-3 bg-academic-100 rounded-lg inline-flex mb-3">
+                <LibraryIcon className="text-academic-700" size={24} />
+              </div>
               <h3 className="text-base font-semibold text-academic-900 mb-2">Ngân Hàng Câu Hỏi</h3>
               <p className="text-academic-600 text-sm">
                 Quản lý và tổ chức kho câu hỏi của bạn
@@ -174,7 +190,9 @@ const InstructorDashboard: React.FC = () => {
               onClick={() => navigate('/instructor/monitoring')}
               className="academic-card-hover p-5 text-left"
             >
-              <div className="text-3xl mb-3">📹</div>
+              <div className="p-3 bg-academic-100 rounded-lg inline-flex mb-3">
+                <EyeIcon className="text-academic-700" size={24} />
+              </div>
               <h3 className="text-base font-semibold text-academic-900 mb-2">Giám Sát</h3>
               <p className="text-academic-600 text-sm">
                 Theo dõi bài thi trực tiếp và phát hiện gian lận
@@ -185,7 +203,9 @@ const InstructorDashboard: React.FC = () => {
               onClick={() => navigate('/instructor/analytics')}
               className="academic-card-hover p-5 text-left"
             >
-              <div className="text-3xl mb-3">📊</div>
+              <div className="p-3 bg-academic-100 rounded-lg inline-flex mb-3">
+                <ChartBarIcon className="text-academic-700" size={24} />
+              </div>
               <h3 className="text-base font-semibold text-academic-900 mb-2">Phân Tích</h3>
               <p className="text-academic-600 text-sm">
                 Xem báo cáo và thống kê chi tiết

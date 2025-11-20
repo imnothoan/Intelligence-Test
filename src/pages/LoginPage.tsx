@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
+import { GraduationCapIcon, BrainIcon, RobotIcon, VideoIcon, UserTeacherIcon } from '@/components/icons/AcademicIcons';
 
 const LoginPage: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -65,7 +66,7 @@ const LoginPage: React.FC = () => {
             <div className="mb-8">
               <div className="inline-flex items-center gap-3 mb-6">
                 <div className="bg-white/10 rounded-lg p-2.5">
-                  <span className="text-3xl">🎓</span>
+                  <GraduationCapIcon className="text-white" size={32} />
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold text-white">
@@ -80,7 +81,7 @@ const LoginPage: React.FC = () => {
               <div className="bg-white/5 rounded-lg p-5 border border-white/10">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
-                    <span className="text-xl">🧠</span>
+                    <BrainIcon className="text-white" size={20} />
                   </div>
                   <div>
                     <h3 className="font-semibold text-base mb-1">Adaptive Testing (CAT)</h3>
@@ -92,7 +93,7 @@ const LoginPage: React.FC = () => {
               <div className="bg-white/5 rounded-lg p-5 border border-white/10">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
-                    <span className="text-xl">🤖</span>
+                    <RobotIcon className="text-white" size={20} />
                   </div>
                   <div>
                     <h3 className="font-semibold text-base mb-1">Tích Hợp AI</h3>
@@ -104,7 +105,7 @@ const LoginPage: React.FC = () => {
               <div className="bg-white/5 rounded-lg p-5 border border-white/10">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
-                    <span className="text-xl">📹</span>
+                    <VideoIcon className="text-white" size={20} />
                   </div>
                   <div>
                     <h3 className="font-semibold text-base mb-1">Giám Sát Thời Gian Thực</h3>
@@ -239,7 +240,9 @@ const LoginPage: React.FC = () => {
                       ? 'border-academic-900 bg-academic-50' 
                       : 'border-academic-300 hover:border-academic-400 bg-white'
                   }`}>
-                    <div className="text-2xl mb-1.5">🎓</div>
+                    <div className="flex justify-center mb-2">
+                      <GraduationCapIcon className="text-academic-700" size={24} />
+                    </div>
                     <span className="font-medium text-academic-900 text-sm">Sinh Viên</span>
                   </div>
                 </label>
@@ -256,7 +259,9 @@ const LoginPage: React.FC = () => {
                       ? 'border-academic-900 bg-academic-50' 
                       : 'border-academic-300 hover:border-academic-400 bg-white'
                   }`}>
-                    <div className="text-2xl mb-1.5">👨‍🏫</div>
+                    <div className="flex justify-center mb-2">
+                      <UserTeacherIcon className="text-academic-700" size={24} />
+                    </div>
                     <span className="font-medium text-academic-900 text-sm">Giảng Viên</span>
                   </div>
                 </label>
