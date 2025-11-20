@@ -1,5 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  BookOpenIcon, AlertCircleIcon, ZapIcon, TargetIcon, RobotIcon, 
+  EyeIcon, SettingsIcon, ShieldIcon, CheckCircleIcon,
+  FileTextIcon, LightbulbIcon, UserTeacherIcon, GraduationCapIcon, AwardIcon 
+} from '@/components/icons/AcademicIcons';
 
 /**
  * User Guide and Documentation
@@ -11,14 +16,14 @@ export default function UserGuide() {
   const [activeSection, setActiveSection] = useState('overview');
 
   const sections = [
-    { id: 'overview', title: 'Overview', icon: '📋' },
-    { id: 'do-i-need-training', title: 'Do I Need Training?', icon: '❓' },
-    { id: 'getting-started', title: 'Getting Started', icon: '🚀' },
-    { id: 'cat-algorithm', title: 'CAT Algorithm', icon: '🎯' },
-    { id: 'llm-integration', title: 'LLM Integration', icon: '🤖' },
-    { id: 'anti-cheat', title: 'Anti-Cheat Training', icon: '👁️' },
-    { id: 'firebase-setup', title: 'Firebase Setup', icon: '🔥' },
-    { id: 'best-practices', title: 'Best Practices', icon: '✨' },
+    { id: 'overview', title: 'Overview', IconComponent: FileTextIcon },
+    { id: 'do-i-need-training', title: 'Do I Need Training?', IconComponent: AlertCircleIcon },
+    { id: 'getting-started', title: 'Getting Started', IconComponent: ZapIcon },
+    { id: 'cat-algorithm', title: 'CAT Algorithm', IconComponent: TargetIcon },
+    { id: 'llm-integration', title: 'LLM Integration', IconComponent: RobotIcon },
+    { id: 'anti-cheat', title: 'Anti-Cheat Training', IconComponent: EyeIcon },
+    { id: 'firebase-setup', title: 'Firebase Setup', IconComponent: SettingsIcon },
+    { id: 'best-practices', title: 'Best Practices', IconComponent: AwardIcon },
   ];
 
   return (
@@ -28,8 +33,9 @@ export default function UserGuide() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                📖 User Guide & Documentation
+              <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                <BookOpenIcon className="text-academic-700" size={28} />
+                User Guide & Documentation
               </h1>
               <p className="text-sm text-gray-600 mt-1">
                 Complete guide for Intelligence Test Platform
@@ -49,23 +55,38 @@ export default function UserGuide() {
       <div className="bg-red-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-start gap-4">
-            <div className="text-3xl" role="img" aria-label="Warning">⚠️</div>
+            <div className="flex-shrink-0" role="img" aria-label="Warning">
+              <ShieldIcon className="text-white" size={32} />
+            </div>
             <div className="flex-1">
               <h2 className="text-xl font-bold mb-2">Important: You DON'T Need to Train AI Models!</h2>
               <p className="text-sm mb-3">
                 <strong>90% of users don't need any training.</strong> The system works immediately with:
               </p>
-              <ul className="text-sm space-y-1 mb-3">
-                <li>✅ Built-in anti-cheat detection (BlazeFace)</li>
-                <li>✅ AI question generation (just add free Gemini API key)</li>
-                <li>✅ Essay auto-grading (same API key)</li>
-                <li>✅ CAT adaptive testing (built-in)</li>
+              <ul className="text-sm space-y-2 mb-3">
+                <li className="flex items-center gap-2">
+                  <CheckCircleIcon className="text-white flex-shrink-0" size={16} />
+                  <span>Built-in anti-cheat detection (BlazeFace)</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircleIcon className="text-white flex-shrink-0" size={16} />
+                  <span>AI question generation (just add free Gemini API key)</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircleIcon className="text-white flex-shrink-0" size={16} />
+                  <span>Essay auto-grading (same API key)</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircleIcon className="text-white flex-shrink-0" size={16} />
+                  <span>CAT adaptive testing (built-in)</span>
+                </li>
               </ul>
               <button
                 onClick={() => setActiveSection('do-i-need-training')}
-                className="px-4 py-2 bg-white text-red-600 rounded-lg font-semibold text-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-600"
+                className="px-4 py-2 bg-white text-red-600 rounded-lg font-semibold text-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-600 flex items-center gap-2"
               >
-                📖 Read: "Do I Need Training?" Section
+                <BookOpenIcon className="text-red-600" size={16} />
+                Read: "Do I Need Training?" Section
               </button>
             </div>
           </div>
@@ -89,7 +110,13 @@ export default function UserGuide() {
                         : 'text-gray-700 hover:bg-gray-50'
                     }`}
                   >
-                    {section.icon} {section.title}
+                    <span className="flex items-center gap-2">
+                      <section.IconComponent 
+                        className={activeSection === section.id ? 'text-blue-600' : 'text-gray-600'} 
+                        size={16} 
+                      />
+                      {section.title}
+                    </span>
                   </button>
                 ))}
               </nav>
@@ -101,7 +128,10 @@ export default function UserGuide() {
             <div className="bg-white rounded-lg shadow p-6">
               {activeSection === 'overview' && (
                 <div className="prose max-w-none">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">📋 Overview</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <FileTextIcon className="text-academic-700" size={24} />
+                    Overview
+                  </h2>
                   
                   <p className="text-gray-700 mb-4">
                     Welcome to the Intelligence Test Platform - a modern, AI-powered examination system designed for
@@ -134,10 +164,16 @@ export default function UserGuide() {
 
               {activeSection === 'do-i-need-training' && (
                 <div className="prose max-w-none">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">❓ Do I Need to Train AI Models?</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <AlertCircleIcon className="text-academic-700" size={24} />
+                    Do I Need to Train AI Models?
+                  </h2>
                   
                   <div className="bg-red-50 border-2 border-red-300 rounded-lg p-6 mb-6">
-                    <h3 className="text-2xl font-bold text-red-900 mb-2">❌ NO - You DON'T Need Training!</h3>
+                    <h3 className="text-2xl font-bold text-red-900 mb-2 flex items-center gap-2">
+                      <ShieldIcon className="text-red-700" size={24} />
+                      NO - You DON'T Need Training!
+                    </h3>
                     <p className="text-lg text-gray-800">
                       <strong>90% of users do NOT need to train any models.</strong> The system is ready to use out of the box!
                     </p>
@@ -147,7 +183,10 @@ export default function UserGuide() {
                   
                   <div className="space-y-4">
                     <div className="border-l-4 border-green-500 bg-green-50 p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">✅ AI Question Generation</h4>
+                      <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                        <CheckCircleIcon className="text-green-600" size={18} />
+                        AI Question Generation
+                      </h4>
                       <p className="text-sm text-gray-700">
                         <strong>No training needed!</strong> Just add an API key:
                       </p>
@@ -159,21 +198,30 @@ export default function UserGuide() {
                     </div>
 
                     <div className="border-l-4 border-green-500 bg-green-50 p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">✅ Essay Auto-Grading</h4>
+                      <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                        <CheckCircleIcon className="text-green-600" size={18} />
+                        Essay Auto-Grading
+                      </h4>
                       <p className="text-sm text-gray-700">
                         <strong>No training needed!</strong> Uses the same LLM APIs above. Just configure the API key.
                       </p>
                     </div>
 
                     <div className="border-l-4 border-green-500 bg-green-50 p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">✅ Anti-Cheat Detection</h4>
+                      <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                        <CheckCircleIcon className="text-green-600" size={18} />
+                        Anti-Cheat Detection
+                      </h4>
                       <p className="text-sm text-gray-700">
                         <strong>No training needed!</strong> Uses pre-trained BlazeFace model from Google. Works immediately.
                       </p>
                     </div>
 
                     <div className="border-l-4 border-green-500 bg-green-50 p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">✅ CAT Algorithm</h4>
+                      <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                        <CheckCircleIcon className="text-green-600" size={18} />
+                        CAT Algorithm
+                      </h4>
                       <p className="text-sm text-gray-700">
                         <strong>No training needed!</strong> Built-in adaptive testing. Just assign difficulty levels (0.0-1.0) to questions.
                       </p>
@@ -235,7 +283,10 @@ npm run dev
                   </div>
 
                   <div className="bg-green-50 border-2 border-green-300 rounded-lg p-6 mt-6">
-                    <h3 className="text-xl font-bold text-green-900 mb-2">📚 For Detailed Vietnamese Guide</h3>
+                    <h3 className="text-xl font-bold text-green-900 mb-2 flex items-center gap-2">
+                      <BookOpenIcon className="text-green-700" size={20} />
+                      For Detailed Vietnamese Guide
+                    </h3>
                     <p className="text-gray-800 mb-3">
                       See comprehensive step-by-step tutorial in Vietnamese:
                     </p>
@@ -291,14 +342,20 @@ npm run dev`}
                   <p className="text-gray-700 mb-2">Use these demo credentials:</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">👨‍🏫 Instructor</h4>
+                      <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                        <UserTeacherIcon className="text-academic-700" size={18} />
+                        Instructor
+                      </h4>
                       <p className="text-sm text-gray-700">
                         Email: instructor@test.com<br />
                         Password: any password
                       </p>
                     </div>
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">👨‍🎓 Student</h4>
+                      <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                        <GraduationCapIcon className="text-academic-700" size={18} />
+                        Student
+                      </h4>
                       <p className="text-sm text-gray-700">
                         Email: student@test.com<br />
                         Password: any password
@@ -310,7 +367,10 @@ npm run dev`}
 
               {activeSection === 'cat-algorithm' && (
                 <div className="prose max-w-none">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">🎯 CAT Algorithm Guide</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <TargetIcon className="text-academic-700" size={24} />
+                    CAT Algorithm Guide
+                  </h2>
 
                   <p className="text-gray-700 mb-4">
                     Computerized Adaptive Testing (CAT) is an intelligent testing method that adapts the difficulty
@@ -386,7 +446,10 @@ python train_cat_model.py --data responses.csv
 
               {activeSection === 'llm-integration' && (
                 <div className="prose max-w-none">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">🤖 LLM Integration Guide</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <RobotIcon className="text-academic-700" size={24} />
+                    LLM Integration Guide
+                  </h2>
 
                   <p className="text-gray-700 mb-4">
                     Integrate Large Language Models to automatically generate questions and grade essays.
@@ -748,7 +811,10 @@ service cloud.firestore {
                   </ul>
 
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
-                    <h4 className="font-semibold text-gray-900 mb-2">💡 Pro Tips</h4>
+                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                      <LightbulbIcon className="text-amber-600" size={18} />
+                      Pro Tips
+                    </h4>
                     <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
                       <li>Schedule regular database backups</li>
                       <li>Create exam templates for common formats</li>
