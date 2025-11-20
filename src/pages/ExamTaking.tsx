@@ -5,6 +5,10 @@ import { useStore } from '@/store';
 import { CATAlgorithm } from '@/algorithms/cat';
 import { antiCheatService } from '@/services/antiCheatService';
 import { Question, CheatWarning } from '@/types';
+import { 
+  FileTextIcon, ZapIcon, BookOpenIcon, ChartBarIcon, LightbulbIcon, 
+  AlertCircleIcon 
+} from '@/components/icons/AcademicIcons';
 
 const ExamTaking: React.FC = () => {
   const { examId } = useParams<{ examId: string }>();
@@ -310,7 +314,10 @@ const ExamTaking: React.FC = () => {
             
             <div className="space-y-6">
               <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-                <h3 className="font-bold text-blue-900 mb-2">📝 Thông Tin Bài Thi</h3>
+                <h3 className="font-bold text-blue-900 mb-2 flex items-center gap-2">
+                  <FileTextIcon className="text-blue-600" size={18} />
+                  Thông Tin Bài Thi
+                </h3>
                 <ul className="space-y-1 text-blue-800 text-sm">
                   <li>• Tên: <strong>{exam.title}</strong></li>
                   <li>• Số câu hỏi: <strong>{exam.isAdaptive ? '~15 câu (thích ứng)' : `${exam.questions.length} câu`}</strong></li>
@@ -339,7 +346,7 @@ const ExamTaking: React.FC = () => {
                     </li>
                   )}
                   <li className="flex items-start gap-2">
-                    <span className="text-yellow-600 font-bold">⚡</span>
+                    <ZapIcon className="text-yellow-600 flex-shrink-0" size={18} />
                     <span>Không tắt trang web - Bài thi sẽ bị hủy</span>
                   </li>
                 </ul>
@@ -429,8 +436,8 @@ const ExamTaking: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
-              <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white w-12 h-12 rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-2xl">📝</span>
+              <div className="bg-academic-900 text-white w-12 h-12 rounded-lg flex items-center justify-center shadow-lg">
+                <FileTextIcon className="text-white" size={24} />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">{exam.title}</h1>
@@ -525,8 +532,9 @@ const ExamTaking: React.FC = () => {
                          currentQuestion.difficulty < 0.7 ? '⭐⭐ Trung bình' : '⭐⭐⭐ Khó'}
                       </span>
                       {currentQuestion.topic && (
-                        <span className="bg-white/20 px-4 py-2 rounded-lg text-sm">
-                          📚 {currentQuestion.topic}
+                        <span className="bg-white/20 px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+                          <BookOpenIcon className="text-white" size={16} />
+                          {currentQuestion.topic}
                         </span>
                       )}
                     </div>
@@ -679,11 +687,11 @@ const ExamTaking: React.FC = () => {
                   <div className="p-4 space-y-3 max-h-64 overflow-y-auto">
                     {warnings.slice(-5).reverse().map((warning) => (
                       <div key={warning.id} className="flex items-start gap-3 text-sm">
-                        <span className="text-2xl flex-shrink-0">
-                          {warning.type === 'look-away' && '👀'}
-                          {warning.type === 'multiple-faces' && '👥'}
-                          {warning.type === 'no-face' && '❌'}
-                        </span>
+                        <div className="flex-shrink-0">
+                          {(warning.type === 'look-away' || warning.type === 'multiple-faces' || warning.type === 'no-face') && (
+                            <AlertCircleIcon className="text-red-600" size={24} />
+                          )}
+                        </div>
                         <div className="flex-1">
                           <p className="font-semibold text-red-800">
                             {warning.type === 'look-away' && 'Phát hiện nhìn ra ngoài'}
@@ -712,7 +720,7 @@ const ExamTaking: React.FC = () => {
                 <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl overflow-hidden shadow-lg">
                   <div className="bg-blue-600 p-4 text-white">
                     <h3 className="font-bold flex items-center gap-2">
-                      <span className="text-xl">📊</span>
+                      <ChartBarIcon className="text-white" size={20} />
                       Kiểm Tra Thích Ứng
                     </h3>
                   </div>
@@ -745,8 +753,9 @@ const ExamTaking: React.FC = () => {
                         ></div>
                       </div>
                     </div>
-                    <div className="text-xs text-blue-700 bg-blue-100 p-3 rounded-lg">
-                      💡 Hệ thống đang điều chỉnh độ khó câu hỏi dựa trên khả năng của bạn
+                    <div className="text-xs text-blue-700 bg-blue-100 p-3 rounded-lg flex items-start gap-2">
+                      <LightbulbIcon className="text-blue-600 flex-shrink-0" size={16} />
+                      <span>Hệ thống đang điều chỉnh độ khó câu hỏi dựa trên khả năng của bạn</span>
                     </div>
                   </div>
                 </div>
