@@ -220,6 +220,7 @@ For each question, provide:
           difficulty,
           topic,
           points: 10,
+          version: 1,
         });
       } else {
         questions.push({
@@ -229,6 +230,7 @@ For each question, provide:
           difficulty,
           topic,
           points: 20,
+          version: 1,
         });
       }
     }
