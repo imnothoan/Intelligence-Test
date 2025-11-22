@@ -61,6 +61,7 @@ const ExamCreator: React.FC = () => {
       difficulty: 0.5,
       topic: 'General',
       points: 10,
+      version: 1,
     };
     setQuestions([...questions, newQuestion]);
   };

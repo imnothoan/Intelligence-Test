@@ -654,6 +654,7 @@ Chỉ trả về JSON, không thêm text khác.`;
             difficulty,
             topic,
             points: 10,
+            version: 1,
           };
         } else {
           return {
@@ -665,6 +666,7 @@ Chỉ trả về JSON, không thêm text khác.`;
             points: 20,
             keyPoints: q.keyPoints,
             rubric: q.rubric,
+            version: 1,
           };
         }
       });

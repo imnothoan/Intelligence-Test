@@ -101,6 +101,7 @@ export default function QuestionBank() {
         difficulty: newQuestion.difficulty || 0.5,
         topic: newQuestion.topic,
         points: newQuestion.points || 10,
+        version: 1,
       };
 
       await firebaseService.createQuestion(question);
