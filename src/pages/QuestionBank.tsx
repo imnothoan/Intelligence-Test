@@ -5,6 +5,7 @@ import { firebaseService } from '@/services/firebaseService';
 import { aiQuestionGenerator } from '@/services/aiQuestionGenerator';
 import { Question } from '@/types';
 import { LibraryIcon, RobotIcon } from '@/components/icons/AcademicIcons';
+import { Plus, Check, Trash2 } from 'lucide-react';
 
 /**
  * Question Bank Management
@@ -51,7 +52,7 @@ export default function QuestionBank() {
     try {
       const allQuestions = await firebaseService.searchQuestions({});
       setQuestions(allQuestions);
-      
+
       // Extract unique topics
       const uniqueTopics = Array.from(new Set(allQuestions.map(q => q.topic)));
       setTopics(uniqueTopics);
@@ -121,11 +122,11 @@ export default function QuestionBank() {
     setLoading(true);
     try {
       const generated = await aiQuestionGenerator.generateQuestions(topic, 5, 0.5, 'multiple-choice');
-      
+
       for (const q of generated) {
         await firebaseService.createQuestion(q);
       }
-      
+
       await loadQuestions();
       alert(`Successfully generated ${generated.length} questions!`);
     } catch (error) {
@@ -238,7 +239,7 @@ export default function QuestionBank() {
               onClick={() => setShowAddModal(true)}
               className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
             >
-              ➕ Add Question
+              <Plus className="w-4 h-4 mr-2 inline" /> Add Question
             </button>
           </div>
         </div>
@@ -311,7 +312,7 @@ export default function QuestionBank() {
                             {question.options.map((option, i) => (
                               <div key={i} className="flex items-center">
                                 <span className={`text-sm ${i === question.correctAnswer ? 'text-green-600 font-medium' : 'text-gray-600'}`}>
-                                  {i === question.correctAnswer && '✓ '}
+                                  {i === question.correctAnswer && <Check className="w-3 h-3 inline mr-1" />}
                                   {option}
                                 </span>
                               </div>
@@ -323,7 +324,7 @@ export default function QuestionBank() {
                         onClick={() => handleDeleteQuestion(question.id)}
                         className="ml-4 p-2 text-red-600 hover:bg-red-50 rounded"
                       >
-                        🗑️
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
@@ -339,13 +340,13 @@ export default function QuestionBank() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Add New Question</h2>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
                 <select
                   value={newQuestion.type}
-                  onChange={(e) => setNewQuestion({...newQuestion, type: e.target.value as any})}
+                  onChange={(e) => setNewQuestion({ ...newQuestion, type: e.target.value as any })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                 >
                   <option value="multiple-choice">Multiple Choice</option>
@@ -357,7 +358,7 @@ export default function QuestionBank() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Question *</label>
                 <textarea
                   value={newQuestion.question}
-                  onChange={(e) => setNewQuestion({...newQuestion, question: e.target.value})}
+                  onChange={(e) => setNewQuestion({ ...newQuestion, question: e.target.value })}
                   rows={3}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                   required
@@ -378,15 +379,15 @@ export default function QuestionBank() {
                           onChange={(e) => {
                             const opts = [...(newQuestion.options || [])];
                             opts[i] = e.target.value;
-                            setNewQuestion({...newQuestion, options: opts});
+                            setNewQuestion({ ...newQuestion, options: opts });
                           }}
                           className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
                         />
                         <button
-                          onClick={() => setNewQuestion({...newQuestion, correctAnswer: i})}
+                          onClick={() => setNewQuestion({ ...newQuestion, correctAnswer: i })}
                           className={`px-4 py-2 rounded-lg ${i === newQuestion.correctAnswer ? 'bg-green-600 text-white' : 'bg-gray-200'}`}
                         >
-                          ✓
+                          <Check className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
@@ -399,7 +400,7 @@ export default function QuestionBank() {
                 <input
                   type="text"
                   value={newQuestion.topic}
-                  onChange={(e) => setNewQuestion({...newQuestion, topic: e.target.value})}
+                  onChange={(e) => setNewQuestion({ ...newQuestion, topic: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                   required
                 />
@@ -416,7 +417,7 @@ export default function QuestionBank() {
                     max="1"
                     step="0.1"
                     value={newQuestion.difficulty}
-                    onChange={(e) => setNewQuestion({...newQuestion, difficulty: parseFloat(e.target.value)})}
+                    onChange={(e) => setNewQuestion({ ...newQuestion, difficulty: parseFloat(e.target.value) })}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                   />
                 </div>
@@ -426,7 +427,7 @@ export default function QuestionBank() {
                     type="number"
                     min="1"
                     value={newQuestion.points}
-                    onChange={(e) => setNewQuestion({...newQuestion, points: parseInt(e.target.value)})}
+                    onChange={(e) => setNewQuestion({ ...newQuestion, points: parseInt(e.target.value) })}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                   />
                 </div>

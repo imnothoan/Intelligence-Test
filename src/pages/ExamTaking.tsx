@@ -5,26 +5,27 @@ import { useStore } from '@/store';
 import { CATAlgorithm } from '@/algorithms/cat';
 import { antiCheatService } from '@/services/antiCheatService';
 import { Question, CheatWarning } from '@/types';
-import { 
-  FileTextIcon, ZapIcon, BookOpenIcon, ChartBarIcon, LightbulbIcon, 
-  AlertCircleIcon 
+import {
+  FileTextIcon, ZapIcon, BookOpenIcon, ChartBarIcon, LightbulbIcon,
+  AlertCircleIcon
 } from '@/components/icons/AcademicIcons';
+import { ClipboardList, AlertTriangle, Check, Keyboard, Rocket, Star } from 'lucide-react';
 
 const ExamTaking: React.FC = () => {
   const { examId } = useParams<{ examId: string }>();
   const navigate = useNavigate();
   const webcamRef = useRef<Webcam>(null);
   const monitoringIntervalRef = useRef<number | null>(null);
-  
+
   const { currentUser, exams, startExamAttempt, updateExamAttempt, submitExamAttempt } = useStore();
-  
+
   const exam = exams.find(e => e.id === examId);
   const [attempt, setAttempt] = useState<any>(null);
-  
+
   const [catAlgorithm] = useState(
     exam ? new CATAlgorithm(exam.questions, exam.isAdaptive ? 15 : exam.questions.length) : null
   );
-  
+
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [askedQuestions, setAskedQuestions] = useState<string[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<string>('');
@@ -32,7 +33,7 @@ const ExamTaking: React.FC = () => {
   const [timeRemaining, setTimeRemaining] = useState(exam?.duration ? exam.duration * 60 : 0);
   const [isMonitoringActive, setIsMonitoringActive] = useState(false);
   const [questionStartTime, setQuestionStartTime] = useState(Date.now());
-  
+
   // New state for enhanced features
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
@@ -97,7 +98,7 @@ const ExamTaking: React.FC = () => {
   // Initialize anti-cheat if enabled
   useEffect(() => {
     if (!attempt) return;
-    
+
     if (exam?.antiCheatEnabled) {
       antiCheatService.initialize().then(() => {
         setIsMonitoringActive(true);
@@ -107,7 +108,7 @@ const ExamTaking: React.FC = () => {
         alert('Camera access required for this exam. Please enable camera permissions.');
       });
     }
-    
+
     // Load first question
     if (catAlgorithm && exam) {
       loadNextQuestion();
@@ -122,7 +123,7 @@ const ExamTaking: React.FC = () => {
   // Timer countdown
   useEffect(() => {
     if (!attempt) return;
-    
+
     const timer = setInterval(() => {
       setTimeRemaining(prev => {
         if (prev <= 1) {
@@ -145,7 +146,7 @@ const ExamTaking: React.FC = () => {
           webcamRef.current.video,
           attempt.id
         );
-        
+
         if (warning) {
           setWarnings(prev => [...prev, warning]);
           updateExamAttempt(attempt.id, {
@@ -167,7 +168,7 @@ const ExamTaking: React.FC = () => {
   const loadNextQuestion = () => {
     if (!catAlgorithm || !exam) return;
 
-    const nextQuestion = exam.isAdaptive 
+    const nextQuestion = exam.isAdaptive
       ? catAlgorithm.getNextQuestion(askedQuestions)
       : exam.questions.find(q => !askedQuestions.includes(q.id));
 
@@ -185,7 +186,7 @@ const ExamTaking: React.FC = () => {
     if (!currentQuestion || !attempt || !catAlgorithm) return;
 
     const timeSpent = (Date.now() - questionStartTime) / 1000;
-    const isCorrect = currentQuestion.type === 'multiple-choice' 
+    const isCorrect = currentQuestion.type === 'multiple-choice'
       ? parseInt(currentAnswer) === currentQuestion.correctAnswer
       : false;
 
@@ -193,7 +194,7 @@ const ExamTaking: React.FC = () => {
       ...attempt.answers,
       [currentQuestion.id]: currentAnswer,
     };
-    
+
     setAutoSaveStatus('saving');
     updateExamAttempt(attempt.id, { answers: updatedAnswers }).then(() => {
       setAutoSaveStatus('saved');
@@ -308,10 +309,10 @@ const ExamTaking: React.FC = () => {
         <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
           <div className="p-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-              <span className="text-4xl">📋</span>
+              <ClipboardList className="w-10 h-10 text-blue-600" />
               Hướng Dẫn Làm Bài Thi
             </h2>
-            
+
             <div className="space-y-6">
               <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
                 <h3 className="font-bold text-blue-900 mb-2 flex items-center gap-2">
@@ -328,15 +329,15 @@ const ExamTaking: React.FC = () => {
 
               <div className="space-y-3">
                 <h3 className="font-bold text-gray-900 flex items-center gap-2">
-                  <span>⚠️</span> Lưu Ý Quan Trọng
+                  <AlertTriangle className="w-5 h-5 text-orange-600" /> Lưu Ý Quan Trọng
                 </h3>
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-start gap-2">
-                    <span className="text-green-600 font-bold">✓</span>
+                    <Check className="w-4 h-4 text-green-600" />
                     <span>Bài thi sẽ tự động lưu câu trả lời của bạn mỗi 5 giây</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-600 font-bold">✓</span>
+                    <Check className="w-4 h-4 text-green-600" />
                     <span>Bài thi sẽ chuyển sang chế độ toàn màn hình để tập trung</span>
                   </li>
                   {exam.antiCheatEnabled && (
@@ -354,7 +355,7 @@ const ExamTaking: React.FC = () => {
 
               <div className="space-y-3">
                 <h3 className="font-bold text-gray-900 flex items-center gap-2">
-                  <span>⌨️</span> Phím Tắt
+                  <Keyboard className="w-5 h-5" /> Phím Tắt
                 </h3>
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div className="bg-gray-100 p-3 rounded">
@@ -379,7 +380,7 @@ const ExamTaking: React.FC = () => {
                 }}
                 className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 font-bold text-lg shadow-lg transition transform hover:scale-105"
               >
-                🚀 Bắt Đầu Làm Bài
+                <Rocket className="w-5 h-5 mr-2 inline" /> Bắt Đầu Làm Bài
               </button>
               <button
                 onClick={() => {
@@ -446,7 +447,7 @@ const ExamTaking: React.FC = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-6">
               {/* Auto-save indicator */}
               <div className="flex items-center gap-2 text-sm">
@@ -503,10 +504,10 @@ const ExamTaking: React.FC = () => {
           {/* Progress Bar */}
           <div className="mt-4">
             <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div 
+              <div
                 className="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-500 ease-out"
-                style={{ 
-                  width: `${(askedQuestions.length / (exam.isAdaptive ? 15 : exam.questions.length)) * 100}%` 
+                style={{
+                  width: `${(askedQuestions.length / (exam.isAdaptive ? 15 : exam.questions.length)) * 100}%`
                 }}
               ></div>
             </div>
@@ -528,8 +529,13 @@ const ExamTaking: React.FC = () => {
                         Câu {askedQuestions.length}
                       </span>
                       <span className="bg-white/20 px-4 py-2 rounded-lg text-sm">
-                        {currentQuestion.difficulty < 0.3 ? '⭐ Dễ' : 
-                         currentQuestion.difficulty < 0.7 ? '⭐⭐ Trung bình' : '⭐⭐⭐ Khó'}
+                        {currentQuestion.difficulty < 0.3 ? (
+                          <><Star className="w-4 h-4 inline fill-yellow-400" /> Dễ</>
+                        ) : currentQuestion.difficulty < 0.7 ? (
+                          <><Star className="w-4 h-4 inline fill-orange-400" /> Trung bình</>
+                        ) : (
+                          <><Star className="w-4 h-4 inline fill-red-400" /> Khó</>
+                        )}
                       </span>
                       {currentQuestion.topic && (
                         <span className="bg-white/20 px-4 py-2 rounded-lg text-sm flex items-center gap-2">
@@ -540,11 +546,10 @@ const ExamTaking: React.FC = () => {
                     </div>
                     <button
                       onClick={toggleBookmark}
-                      className={`p-2 rounded-lg transition flex-shrink-0 ${
-                        bookmarkedQuestions.has(currentQuestion.id)
-                          ? 'bg-yellow-400 text-yellow-900'
-                          : 'bg-white/20 text-white hover:bg-white/30'
-                      }`}
+                      className={`p-2 rounded-lg transition flex-shrink-0 ${bookmarkedQuestions.has(currentQuestion.id)
+                        ? 'bg-yellow-400 text-yellow-900'
+                        : 'bg-white/20 text-white hover:bg-white/30'
+                        }`}
                       title="Đánh dấu câu hỏi (Ctrl/⌘ + B)"
                     >
                       <svg className="w-6 h-6" fill={bookmarkedQuestions.has(currentQuestion.id) ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
@@ -565,11 +570,10 @@ const ExamTaking: React.FC = () => {
                       {currentQuestion.options.map((option, index) => (
                         <label
                           key={index}
-                          className={`group flex items-start p-5 border-2 rounded-xl cursor-pointer transition-all hover:shadow-md ${
-                            currentAnswer === String(index)
-                              ? 'border-blue-500 bg-blue-50 shadow-md'
-                              : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50/50'
-                          }`}
+                          className={`group flex items-start p-5 border-2 rounded-xl cursor-pointer transition-all hover:shadow-md ${currentAnswer === String(index)
+                            ? 'border-blue-500 bg-blue-50 shadow-md'
+                            : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50/50'
+                            }`}
                         >
                           <div className="flex items-center h-6">
                             <input
@@ -582,15 +586,13 @@ const ExamTaking: React.FC = () => {
                             />
                           </div>
                           <div className="ml-4 flex-1">
-                            <span className={`text-lg ${
-                              currentAnswer === String(index) ? 'text-blue-900 font-medium' : 'text-gray-700'
-                            }`}>
+                            <span className={`text-lg ${currentAnswer === String(index) ? 'text-blue-900 font-medium' : 'text-gray-700'
+                              }`}>
                               {option}
                             </span>
                           </div>
-                          <div className={`ml-4 text-2xl transition-opacity ${
-                            currentAnswer === String(index) ? 'opacity-100' : 'opacity-0'
-                          }`}>
+                          <div className={`ml-4 text-2xl transition-opacity ${currentAnswer === String(index) ? 'opacity-100' : 'opacity-0'
+                            }`}>
                             ✓
                           </div>
                         </label>
@@ -619,8 +621,8 @@ const ExamTaking: React.FC = () => {
                       disabled={!currentAnswer}
                       className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed font-bold text-lg shadow-lg transition transform hover:scale-105 disabled:transform-none disabled:shadow-none"
                     >
-                      {askedQuestions.length >= (exam.isAdaptive ? 15 : exam.questions.length) 
-                        ? '✓ Nộp Bài' 
+                      {askedQuestions.length >= (exam.isAdaptive ? 15 : exam.questions.length)
+                        ? '✓ Nộp Bài'
                         : 'Câu Tiếp Theo →'}
                     </button>
                   </div>
@@ -733,7 +735,7 @@ const ExamTaking: React.FC = () => {
                         </span>
                       </div>
                       <div className="h-3 bg-blue-100 rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-500"
                           style={{ width: `${catAlgorithm.getState().estimatedAbility * 100}%` }}
                         ></div>
@@ -747,7 +749,7 @@ const ExamTaking: React.FC = () => {
                         </span>
                       </div>
                       <div className="h-3 bg-blue-100 rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className="h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-500"
                           style={{ width: `${(1 - catAlgorithm.getState().standardError) * 100}%` }}
                         ></div>

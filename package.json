@@ -25,6 +25,7 @@
     "@tensorflow/tfjs": "^4.22.0",
     "axios": "^1.13.1",
     "firebase": "^12.5.0",
+    "lucide-react": "^0.554.0",
     "openai": "^6.7.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

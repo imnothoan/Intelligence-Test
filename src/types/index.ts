@@ -43,14 +43,40 @@ export interface Question {
   difficulty: number; // 0-1 scale for CAT algorithm
   topic: string;
   points: number;
-  
-  // NEW: Enhanced metadata for better organization and AI generation
+
+  // Enhanced metadata for better organization and AI generation
   gradeLevel?: GradeLevel;
   subject?: SubjectInfo;
   cognitiveLevel?: CognitiveLevel;
   tags?: string[]; // Custom tags for filtering
+  keywords?: string[]; // For searchability
   source?: string; // SGK, Đề thi chính thức, AI generated, etc.
   explanation?: string; // Detailed explanation for the answer
+
+  // IRT Parameters (from trained models)
+  irtParameters?: {
+    discrimination: number;  // 'a' parameter - how well it differentiates
+    difficultyIRT: number;   // 'b' parameter - actual IRT difficulty
+    guessing: number;         // 'c' parameter - probability of guessing
+  };
+
+  // Performance Analytics
+  analytics?: {
+    timesUsed: number;
+    avgScore: number;
+    facility: number;        // % who got it right
+    discriminationIndex: number;  // how well it separates high/low performers
+    lastUsed?: Date;
+  };
+
+  // Organization
+  folderId?: string;
+  folder?: string;         // For hierarchy: "Math/Calculus/Derivatives"
+  version: number;
+  author?: string;
+  reviewStatus?: 'draft' | 'reviewed' | 'approved';
+
+  // Timestamps
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -71,14 +97,14 @@ export interface QuestionDistribution {
     apply: number; // % of questions at 'apply' level
     analyze: number; // % of questions at 'analyze' level
   };
-  
+
   // Distribution by difficulty
   difficultyDistribution?: {
     easy: number; // % of easy questions (0.0-0.3)
     medium: number; // % of medium questions (0.3-0.7)
     hard: number; // % of hard questions (0.7-1.0)
   };
-  
+
   // Distribution by question type
   typeDistribution?: {
     multipleChoice: number;
@@ -107,7 +133,7 @@ export interface Exam {
   isAdaptive: boolean; // CAT enabled
   antiCheatEnabled: boolean;
   createdAt: Date;
-  
+
   // NEW: Enhanced metadata for better exam creation
   targetAudience?: ExamTargetAudience;
   syllabus?: ExamSyllabus;

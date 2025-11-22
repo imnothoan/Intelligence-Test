@@ -10,6 +10,7 @@ import MonitoringDashboard from '@/pages/MonitoringDashboard';
 import AnalyticsDashboard from '@/pages/AnalyticsDashboard';
 import QuestionBank from '@/pages/QuestionBank';
 import UserGuide from '@/pages/UserGuide';
+import UserProfile from '@/pages/UserProfile';
 
 function App() {
   const { isAuthenticated, currentUser } = useStore();
@@ -19,7 +20,7 @@ function App() {
       <div className="min-h-screen bg-gray-50">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          
+
           {/* Protected routes */}
           <Route
             path="/"
@@ -35,7 +36,7 @@ function App() {
               )
             }
           />
-          
+
           <Route
             path="/instructor"
             element={
@@ -46,7 +47,7 @@ function App() {
               )
             }
           />
-          
+
           <Route
             path="/instructor/exam/create"
             element={
@@ -57,7 +58,7 @@ function App() {
               )
             }
           />
-          
+
           <Route
             path="/instructor/class/:classId"
             element={
@@ -68,7 +69,7 @@ function App() {
               )
             }
           />
-          
+
           <Route
             path="/instructor/monitoring"
             element={
@@ -79,7 +80,7 @@ function App() {
               )
             }
           />
-          
+
           <Route
             path="/instructor/analytics"
             element={
@@ -90,7 +91,7 @@ function App() {
               )
             }
           />
-          
+
           <Route
             path="/instructor/question-bank"
             element={
@@ -101,12 +102,24 @@ function App() {
               )
             }
           />
-          
+
+
+          <Route
+            path="/profile"
+            element={
+              isAuthenticated ? (
+                <UserProfile />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+
           <Route
             path="/guide"
             element={<UserGuide />}
           />
-          
+
           <Route
             path="/student"
             element={
@@ -117,7 +130,7 @@ function App() {
               )
             }
           />
-          
+
           <Route
             path="/exam/:examId"
             element={

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
-import { 
-  UserTeacherIcon, BuildingIcon, FileTextIcon, ChartBarIcon, ActivityIcon, 
-  ZapIcon, PlusCircleIcon, EyeIcon, LibraryIcon 
+import {
+  UserTeacherIcon, BuildingIcon, FileTextIcon, ChartBarIcon, ActivityIcon,
+  ZapIcon, PlusCircleIcon, EyeIcon, LibraryIcon
 } from '@/components/icons/AcademicIcons';
+import { Plus, BookOpen, Cloud, School, FileText, Video, Check } from 'lucide-react';
 
 const InstructorDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -40,15 +41,15 @@ const InstructorDashboard: React.FC = () => {
 
   const instructorExams = exams.filter(exam => exam.instructorId === currentUser?.id);
   const instructorClasses = classes.filter(cls => cls.instructorId === currentUser?.id);
-  
+
   // Calculate statistics
   const totalStudents = instructorClasses.reduce((sum, cls) => sum + cls.students.length, 0);
   const totalExams = instructorExams.length;
-  const totalAttempts = examAttempts.filter(attempt => 
+  const totalAttempts = examAttempts.filter(attempt =>
     instructorExams.some(exam => exam.id === attempt.examId)
   ).length;
-  const activeExams = examAttempts.filter(attempt => 
-    attempt.status === 'in-progress' && 
+  const activeExams = examAttempts.filter(attempt =>
+    attempt.status === 'in-progress' &&
     instructorExams.some(exam => exam.id === attempt.examId)
   ).length;
 
@@ -70,6 +71,15 @@ const InstructorDashboard: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate('/profile')}
+                className="academic-button-secondary flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                Tài Khoản
+              </button>
               <button
                 onClick={() => navigate('/guide')}
                 className="academic-button-secondary flex items-center gap-2"
@@ -158,7 +168,7 @@ const InstructorDashboard: React.FC = () => {
               Hành Động Nhanh
             </h2>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             <button
               onClick={() => navigate('/instructor/exam/create')}
@@ -223,7 +233,7 @@ const InstructorDashboard: React.FC = () => {
             >
               <div className="flex items-center gap-4">
                 <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <span className="text-2xl">➕</span>
+                  <Plus className="w-7 h-7" />
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-1">Tạo Lớp Học</h3>
@@ -238,7 +248,7 @@ const InstructorDashboard: React.FC = () => {
             >
               <div className="flex items-center gap-4">
                 <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 text-white w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <span className="text-2xl">📖</span>
+                  <BookOpen className="w-7 h-7" />
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-1">Hướng Dẫn</h3>
@@ -250,7 +260,7 @@ const InstructorDashboard: React.FC = () => {
             <div className="bg-gradient-to-br from-green-50 to-teal-50 rounded-2xl shadow-lg border-2 border-green-200 p-6">
               <div className="flex items-center gap-4">
                 <div className="bg-green-500 text-white w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <span className="text-2xl">☁️</span>
+                  <Cloud className="w-7 h-7" />
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-1">Trạng Thái</h3>
@@ -269,7 +279,7 @@ const InstructorDashboard: React.FC = () => {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
               <span className="bg-gradient-to-r from-purple-500 to-pink-600 text-white w-10 h-10 rounded-xl flex items-center justify-center">
-                🏫
+                <School className="w-6 h-6" />
               </span>
               Lớp Học Của Tôi
             </h2>
@@ -279,10 +289,14 @@ const InstructorDashboard: React.FC = () => {
               </span>
             )}
           </div>
-          
+
           {instructorClasses.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-lg border-2 border-dashed border-gray-300 p-12 text-center">
-              <div className="text-6xl mb-4">🏫</div>
+              <div className="flex justify-center mb-4">
+                <div className="bg-purple-100 p-4 rounded-full">
+                  <School className="w-16 h-16 text-purple-700" />
+                </div>
+              </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Chưa có lớp học</h3>
               <p className="text-gray-600 mb-6">
                 Tạo lớp học đầu tiên để bắt đầu quản lý sinh viên và đề thi
@@ -291,7 +305,7 @@ const InstructorDashboard: React.FC = () => {
                 onClick={() => setShowCreateClass(true)}
                 className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-105"
               >
-                ➕ Tạo Lớp Học Ngay
+                <Plus className="w-5 h-5 mr-2" /> Tạo Lớp Học Ngay
               </button>
             </div>
           ) : (
@@ -340,7 +354,7 @@ const InstructorDashboard: React.FC = () => {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
               <span className="bg-gradient-to-r from-blue-500 to-cyan-600 text-white w-10 h-10 rounded-xl flex items-center justify-center">
-                📝
+                <FileText className="w-6 h-6" />
               </span>
               Đề Thi Của Tôi
             </h2>
@@ -350,10 +364,14 @@ const InstructorDashboard: React.FC = () => {
               </span>
             )}
           </div>
-          
+
           {instructorExams.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-lg border-2 border-dashed border-gray-300 p-12 text-center">
-              <div className="text-6xl mb-4">📝</div>
+              <div className="flex justify-center mb-4">
+                <div className="bg-blue-100 p-4 rounded-full">
+                  <FileText className="w-16 h-16 text-blue-700" />
+                </div>
+              </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Chưa có đề thi</h3>
               <p className="text-gray-600 mb-6">
                 Tạo đề thi đầu tiên để bắt đầu đánh giá sinh viên
@@ -362,7 +380,7 @@ const InstructorDashboard: React.FC = () => {
                 onClick={() => navigate('/instructor/exam/create')}
                 className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:from-blue-700 hover:to-cyan-700 transition transform hover:scale-105"
               >
-                ➕ Tạo Đề Thi Ngay
+                <Plus className="w-5 h-5 mr-2" /> Tạo Đề Thi Ngay
               </button>
             </div>
           ) : (
@@ -394,17 +412,15 @@ const InstructorDashboard: React.FC = () => {
                           <span className="text-gray-500 text-sm ml-1">phút</span>
                         </td>
                         <td className="px-6 py-4">
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
-                            exam.isAdaptive ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
-                          }`}>
-                            {exam.isAdaptive ? '✓ Có' : 'Không'}
+                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${exam.isAdaptive ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+                            }`}>
+                            {exam.isAdaptive ? <><Check className="w-3 h-3 inline mr-1" /> Có</> : 'Không'}
                           </span>
                         </td>
                         <td className="px-6 py-4">
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
-                            exam.antiCheatEnabled ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
-                          }`}>
-                            {exam.antiCheatEnabled ? '🎥 Có' : 'Không'}
+                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${exam.antiCheatEnabled ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
+                            }`}>
+                            {exam.antiCheatEnabled ? <><Video className="w-3 h-3 inline mr-1" /> Có</> : 'Không'}
                           </span>
                         </td>
                       </tr>
@@ -423,7 +439,7 @@ const InstructorDashboard: React.FC = () => {
           <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl transform transition">
             <div className="bg-gradient-to-r from-purple-500 to-indigo-600 p-6 text-white rounded-t-2xl">
               <h2 className="text-2xl font-bold flex items-center gap-2">
-                <span className="text-3xl">➕</span>
+                <Plus className="w-8 h-8" />
                 Tạo Lớp Học Mới
               </h2>
             </div>

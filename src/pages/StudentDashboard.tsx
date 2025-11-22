@@ -1,10 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
-import { 
-  GraduationCapIcon, BookOpenIcon, FileTextIcon, CheckCircleIcon, 
-  AwardIcon, ClockIcon 
+import {
+  GraduationCapIcon, BookOpenIcon, FileTextIcon, CheckCircleIcon,
+  AwardIcon, ClockIcon
 } from '@/components/icons/AcademicIcons';
+import { School, BookOpen, BarChart3 } from 'lucide-react';
 
 const StudentDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -16,12 +17,12 @@ const StudentDashboard: React.FC = () => {
   };
 
   // Find classes where student is enrolled
-  const enrolledClasses = classes.filter(cls => 
+  const enrolledClasses = classes.filter(cls =>
     cls.students.includes(currentUser?.id || '')
   );
 
   // Find available exams from enrolled classes
-  const availableExams = exams.filter(exam => 
+  const availableExams = exams.filter(exam =>
     enrolledClasses.some(cls => cls.exams.includes(exam.id))
   );
 
@@ -35,7 +36,7 @@ const StudentDashboard: React.FC = () => {
   const averageScore = myAttempts.length > 0
     ? Math.round(myAttempts.reduce((sum, a) => sum + (a.score || 0), 0) / myAttempts.length)
     : 0;
-  const upcomingExams = availableExams.filter(exam => 
+  const upcomingExams = availableExams.filter(exam =>
     !myAttempts.some(a => a.examId === exam.id && a.status === 'completed')
   );
 
@@ -57,6 +58,15 @@ const StudentDashboard: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate('/profile')}
+                className="academic-button-secondary flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                Tài Khoản
+              </button>
               <button
                 onClick={() => navigate('/guide')}
                 className="academic-button-secondary flex items-center gap-2"
@@ -152,7 +162,7 @@ const StudentDashboard: React.FC = () => {
               </span>
             )}
           </div>
-          
+
           {upcomingExams.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-lg border-2 border-dashed border-gray-300 p-12 text-center">
               <div className="flex justify-center mb-4">
@@ -171,7 +181,7 @@ const StudentDashboard: React.FC = () => {
                 const hasAttempt = myAttempts.some(
                   a => a.examId === exam.id && a.status === 'completed'
                 );
-                
+
                 return (
                   <div
                     key={exam.id}
@@ -209,7 +219,7 @@ const StudentDashboard: React.FC = () => {
                             {exam.isAdaptive ? '~15 câu' : `${exam.questions.length} câu`}
                           </span>
                         </div>
-                        
+
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-gray-600 flex items-center gap-2">
                             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -230,8 +240,8 @@ const StudentDashboard: React.FC = () => {
                             Độ khó
                           </span>
                           <span className="font-semibold text-gray-900">
-                            {exam.questions.some(q => q.difficulty > 0.7) ? 'Khó' : 
-                             exam.questions.some(q => q.difficulty > 0.3) ? 'Trung bình' : 'Dễ'}
+                            {exam.questions.some(q => q.difficulty > 0.7) ? 'Khó' :
+                              exam.questions.some(q => q.difficulty > 0.3) ? 'Trung bình' : 'Dễ'}
                           </span>
                         </div>
 
@@ -280,15 +290,19 @@ const StudentDashboard: React.FC = () => {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
               <span className="bg-gradient-to-r from-green-500 to-teal-600 text-white w-10 h-10 rounded-xl flex items-center justify-center">
-                🏫
+                <School className="w-6 h-6" />
               </span>
               Lớp Học Của Tôi
             </h2>
           </div>
-          
+
           {enrolledClasses.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-lg border-2 border-dashed border-gray-300 p-12 text-center">
-              <div className="text-6xl mb-4">📚</div>
+              <div className="flex justify-center mb-4">
+                <div className="bg-academic-100 p-4 rounded-full">
+                  <BookOpen className="w-16 h-16 text-academic-700" />
+                </div>
+              </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Chưa có lớp học</h3>
               <p className="text-gray-600 mb-6">
                 Bạn chưa tham gia lớp học nào. Hãy liên hệ giảng viên để được thêm vào lớp!
@@ -346,12 +360,12 @@ const StudentDashboard: React.FC = () => {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
                 <span className="bg-gradient-to-r from-orange-500 to-red-600 text-white w-10 h-10 rounded-xl flex items-center justify-center">
-                  📊
+                  <BarChart3 className="w-6 h-6" />
                 </span>
                 Kết Quả Gần Đây
               </h2>
             </div>
-            
+
             <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -373,26 +387,24 @@ const StudentDashboard: React.FC = () => {
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-2">
-                              <div className={`text-2xl font-bold ${
-                                (attempt.score || 0) >= 80 ? 'text-green-600' :
+                              <div className={`text-2xl font-bold ${(attempt.score || 0) >= 80 ? 'text-green-600' :
                                 (attempt.score || 0) >= 60 ? 'text-blue-600' :
-                                (attempt.score || 0) >= 40 ? 'text-orange-600' :
-                                'text-red-600'
-                              }`}>
+                                  (attempt.score || 0) >= 40 ? 'text-orange-600' :
+                                    'text-red-600'
+                                }`}>
                                 {attempt.score || 0}
                               </div>
                               <span className="text-gray-500 text-sm">/100</span>
                             </div>
                           </td>
                           <td className="px-6 py-4">
-                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
-                              attempt.status === 'completed' ? 'bg-green-100 text-green-800' :
+                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${attempt.status === 'completed' ? 'bg-green-100 text-green-800' :
                               attempt.status === 'flagged' ? 'bg-red-100 text-red-800' :
-                              'bg-yellow-100 text-yellow-800'
-                            }`}>
+                                'bg-yellow-100 text-yellow-800'
+                              }`}>
                               {attempt.status === 'completed' ? '✓ Hoàn thành' :
-                               attempt.status === 'flagged' ? '⚠ Đánh dấu' :
-                               '⏳ Đang làm'}
+                                attempt.status === 'flagged' ? '⚠ Đánh dấu' :
+                                  '⏳ Đang làm'}
                             </span>
                           </td>
                           <td className="px-6 py-4 text-sm text-gray-600">

@@ -67,7 +67,7 @@ export class AIQuestionGenerator {
     type: 'multiple-choice' | 'essay'
   ): Promise<Question[]> {
     const prompt = this.buildPrompt(topic, count, difficulty, type);
-    
+
     const response = await fetch(this.apiEndpoint, {
       method: 'POST',
       headers: {
@@ -96,12 +96,12 @@ export class AIQuestionGenerator {
 
     const data = await response.json();
     const content = data.choices[0]?.message?.content;
-    
+
     return this.parseGeneratedQuestions(content, topic, difficulty);
   }
 
   /**
-   * Build prompt for AI model
+   * Build enhanced prompt for AI model with better quality control
    */
   private buildPrompt(
     topic: string,
@@ -110,30 +110,53 @@ export class AIQuestionGenerator {
     type: string
   ): string {
     const difficultyLabel = difficulty < 0.3 ? 'easy' : difficulty < 0.7 ? 'medium' : 'hard';
-    
-    if (type === 'multiple-choice') {
-      return `Generate ${count} ${difficultyLabel} multiple-choice questions about ${topic}.
-For each question, provide:
-1. The question text
-2. Four options (A, B, C, D)
-3. The correct answer (letter)
-4. A brief explanation
+    const difficultyDescription = difficulty < 0.3
+      ? 'suitable for beginners, testing basic understanding'
+      : difficulty < 0.7
+        ? 'requiring deeper understanding and application'
+        : 'challenging, requiring critical thinking and mastery';
 
-Format as JSON array with structure:
+    if (type === 'multiple-choice') {
+      return `You are an expert educational content creator. Generate ${count} HIGH-QUALITY ${difficultyLabel} multiple-choice questions about "${topic}".
+
+QUALITY REQUIREMENTS:
+1. Questions must be clear, unambiguous, and academically rigorous
+2. Each question should test a specific concept or skill
+3. Correct answers must be definitively correct
+4. Distractors (wrong options) should be plausible but clearly incorrect to someone who understands the material
+5. Avoid trivial questions that test memorization rather than understanding
+6. Questions should be ${difficultyDescription}
+
+For each question, provide:
+- **question**: The question text (clear and specific)
+- **options**: Array of 4 options (without letters A, B, C, D - just the text)
+- **correctAnswer**: Index of correct option (0-3)
+- **explanation**: Brief explanation why the answer is correct and why others are wrong (2-3 sentences)
+- **bloom_level**: One of ["remember", "understand", "apply", "analyze", "evaluate", "create"]
+
+EXAMPLE FORMAT (for topic "Calculus - Derivatives"):
 [{
-  "question": "...",
-  "options": ["A) ...", "B) ...", "C) ...", "D) ..."],
+  "question": "If f(x) = 3x² + 2x - 5, what is f'(x)?",
+  "options": [
+    "6x + 2",
+    "3x + 2",
+    "6x² + 2x",
+    "3x² + 2"
+  ],
   "correctAnswer": 0,
-  "explanation": "..."
-}]`;
+  "explanation": "Using the power rule, the derivative of 3x² is 6x, and the derivative of 2x is 2. The constant -5 becomes 0. Therefore f'(x) = 6x + 2.",
+  "bloom_level": "apply"
+}]
+
+Now generate ${count} questions about "${topic}". Return ONLY the JSON array, no additional text.`;
     } else {
       return `Generate ${count} ${difficultyLabel} essay questions about ${topic}.
 For each question, provide:
-1. The question prompt
-2. Key points that should be covered
-3. Suggested rubric
+      1. The question prompt
+      2. Key points that should be covered
+      3. Suggested rubric
 
-Format as JSON array.`;
+      Format as JSON array.`;
     }
   }
 
@@ -153,9 +176,9 @@ Format as JSON array.`;
       }
 
       const parsed = JSON.parse(jsonMatch[0]);
-      
+
       return parsed.map((q: any, index: number) => ({
-        id: `generated-${Date.now()}-${index}`,
+        id: `generated - ${Date.now()} -${index} `,
         type: 'multiple-choice' as const,
         question: q.question,
         options: q.options,
@@ -180,11 +203,11 @@ Format as JSON array.`;
     type: 'multiple-choice' | 'essay'
   ): Question[] {
     const questions: Question[] = [];
-    
+
     for (let i = 0; i < count; i++) {
       if (type === 'multiple-choice') {
         questions.push({
-          id: `mock-${Date.now()}-${i}`,
+          id: `mock - ${Date.now()} -${i} `,
           type: 'multiple-choice',
           question: `Sample question ${i + 1} about ${topic}?`,
           options: [
@@ -200,7 +223,7 @@ Format as JSON array.`;
         });
       } else {
         questions.push({
-          id: `mock-essay-${Date.now()}-${i}`,
+          id: `mock - essay - ${Date.now()} -${i} `,
           type: 'essay',
           question: `Discuss and explain the key concepts of ${topic}. Provide detailed examples.`,
           difficulty,
@@ -209,7 +232,7 @@ Format as JSON array.`;
         });
       }
     }
-    
+
     return questions;
   }
 }

@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/store';
 import { Question } from '@/types';
 import { aiQuestionGenerator } from '@/services/aiQuestionGenerator';
+import { Sparkles } from 'lucide-react';
 
 const ExamCreator: React.FC = () => {
   const navigate = useNavigate();
   const { currentUser, createExam, classes } = useStore();
-  
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState(60);
@@ -15,7 +16,7 @@ const ExamCreator: React.FC = () => {
   const [isAdaptive, setIsAdaptive] = useState(true);
   const [antiCheatEnabled, setAntiCheatEnabled] = useState(true);
   const [questions, setQuestions] = useState<Question[]>([]);
-  
+
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationTopic, setGenerationTopic] = useState('');
   const [generationCount, setGenerationCount] = useState(10);
@@ -187,7 +188,7 @@ const ExamCreator: React.FC = () => {
             {/* AI Question Generation */}
             <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-lg shadow">
               <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                🤖 AI Question Generation
+                <Sparkles className="w-5 h-5 inline mr-2" /> AI Question Generation
               </h2>
               <div className="space-y-4">
                 <div>
@@ -267,7 +268,7 @@ const ExamCreator: React.FC = () => {
                   Add Manual Question
                 </button>
               </div>
-              
+
               {questions.length === 0 ? (
                 <p className="text-gray-600 text-center py-8">
                   No questions yet. Generate with AI or add manually.
@@ -345,7 +346,7 @@ const ExamCreator: React.FC = () => {
                     </div>
                   </div>
                 </label>
-                
+
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
